@@ -1,0 +1,1818 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大火开始前的三零零分钟</title>
+<style>
+:root {
+    --bg: #0a0a0a;
+    --text: #c8c4c0;
+    --text-dark: #2a2a2a;
+    --thought: #8a7a9a;
+    --thought-dark: #6b5b7a;
+    --chat-name: #c4a882;
+    --divider: #4a4a4a;
+    --chapter: #5a5a5a;
+    --card-bg: rgba(24,22,20,0.96);
+    --card-border: rgba(255,255,255,0.08);
+    --bubble-bg: rgba(255,255,255,0.04);
+    --bubble-bg-dark: rgba(0,0,0,0.03);
+    --bubble-border: rgba(255,255,255,0.1);
+    --bubble-border-dark: rgba(0,0,0,0.12);
+    --chat-bg: rgba(180,169,201,0.07);
+    --chat-bg-dark: rgba(100,90,120,0.06);
+    --chat-border: rgba(180,169,201,0.18);
+    --update-bg: rgba(196,168,130,0.1);
+    --update-border: rgba(196,168,130,0.3);
+    --notice-bg: rgba(200,180,150,0.08);
+    --notice-border: rgba(200,180,150,0.3);
+    --amber: #c4a882;
+    --amber-dark: #8a7050;
+    --ember: #e8a850;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "宋体", Georgia, serif;
+    line-height: 2;
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    overflow-x: hidden;
+    overflow-y: auto;
+    transition: background-color 1.2s ease, color 1.2s ease;
+}
+body.white-bg { background: #efede8; }
+#particles {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    pointer-events: none; z-index:1;
+    opacity: 0.4; transition: opacity 2s ease;
+}
+body.white-bg #particles { opacity: 0; }
+.ember {
+    position: absolute;
+    width: 3px; height: 3px;
+    background: var(--ember);
+    border-radius: 50%;
+    animation: rise var(--dur) linear infinite;
+    animation-delay: var(--delay);
+    opacity: 0;
+}
+@keyframes rise {
+    0% { transform: translateY(0) translateX(0); opacity: 0; }
+    10% { opacity: 0.7; }
+    90% { opacity: 0.1; }
+    100% { transform: translateY(-100vh) translateX(var(--drift)); opacity: 0; }
+}
+#app {
+    width: 100%; max-width: 580px;
+    padding: 2em 1.5em 5em;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    min-height: 100vh; min-height: 100dvh;
+    position: relative; z-index:2;
+}
+#display {
+    width: 100%;
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center;
+    min-height: 50vh;
+    transition: opacity 0.35s ease;
+}
+#display.fading { opacity: 0; }
+
+/* Cover */
+.cover { text-align: center; animation: fadeUp 1s ease forwards; }
+.cover .cover-title {
+    font-size: 26px; color: #d0d0d0;
+    letter-spacing: 0.25em; margin-bottom: 2.5em; font-weight: normal;
+}
+.cover .cover-btn {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #b8b8b8; padding: 0.7em 2.2em;
+    font-family: inherit; font-size: 15px;
+    letter-spacing: 0.15em; border-radius: 3px;
+    cursor: pointer; transition: all 0.3s ease;
+}
+.cover .cover-btn:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: rgba(255,255,255,0.3); color: #e0e0e0;
+}
+.cover .cover-author {
+    font-size: 14px; color: #7a7a7a;
+    letter-spacing: 0.15em; margin-bottom: 2em;
+    animation: fadeUp 1.2s ease forwards; animation-delay: 0.3s; opacity: 0;
+}
+
+/* Message types */
+.msg-chapter {
+    text-align: center; font-size: 32px;
+    color: var(--chapter); letter-spacing: 0.3em;
+    animation: fadeUp 0.7s ease forwards; padding: 0.6em 0;
+}
+.white-bg .msg-chapter { color: #3a3a3a; }
+.msg-time {
+    text-align: center; font-size: 13px;
+    color: rgba(200,180,150,0.3); letter-spacing: 0.25em;
+    animation: fadeUp 0.6s ease forwards; padding: 0.25em 0;
+    font-family: "Courier New", monospace;
+}
+.white-bg .msg-time { color: rgba(0,0,0,0.18); }
+.msg-divider {
+    text-align: center; color: var(--divider);
+    font-size: 13px; letter-spacing: 0.5em;
+    animation: fadeUp 0.5s ease forwards; padding: 0.5em 0;
+}
+.white-bg .msg-divider { color: #888; }
+.msg-narration {
+    text-align: center; font-size: 17px; color: var(--text);
+    animation: fadeUp 0.5s ease forwards; padding: 0.4em 0;
+    max-width: 90%;
+}
+.white-bg .msg-narration { color: var(--text-dark); }
+.msg-thought {
+    text-align: center; font-size: 16px; color: var(--thought);
+    font-style: italic; animation: fadeUp 0.5s ease forwards;
+    padding: 0.4em 0; max-width: 90%;
+}
+.white-bg .msg-thought { color: var(--thought-dark); }
+.msg-dialogue {
+    display: flex; flex-direction: column; align-items: center;
+    animation: fadeUp 0.5s ease forwards; padding: 0.35em 0; width: 100%;
+}
+.msg-dialogue .bubble {
+    background: none;
+    border: none;
+    border-left: 2px solid rgba(196,168,130,0.22);
+    padding: 0.1em 0 0.1em 0.75em;
+    max-width: 85%; font-size: 17px; color: #d6cec2;
+    text-align: left; line-height: 1.9;
+}
+.white-bg .msg-dialogue .bubble {
+    border-left-color: rgba(140,110,70,0.25);
+    color: #3a3530;
+}
+.msg-shoot {
+    text-align: center; font-size: 17px;
+    animation: fadeUp 0.5s ease forwards, screenShake 0.5s ease 0.15s;
+    padding: 0.4em 0; max-width: 90%;
+}
+.msg-shoot .bubble {
+    border-left-color: rgba(212,116,92,0.4) !important;
+    color: #d4a090 !important;
+    animation: pulseGlow 0.6s ease;
+}
+.msg-shake {
+    text-align: center; font-size: 17px;
+    animation: fadeUp 0.5s ease forwards, gentleShake 0.5s ease 0.2s;
+    padding: 0.4em 0; max-width: 90%;
+}
+.msg-shake .bubble {
+    border-left-color: rgba(196,168,130,0.35);
+}
+.msg-chat {
+    display: flex; flex-direction: column;
+    animation: fadeUp 0.5s ease forwards;
+    padding: 0.3em 0; width: 100%; max-width: 82%;
+}
+.msg-chat.mine { align-self: flex-end; align-items: flex-end; margin-left: auto; }
+.msg-chat .chat-speaker {
+    font-size: 11px; color: var(--chat-name);
+    letter-spacing: 0.08em; margin-bottom: 0.12em; font-weight: 500;
+}
+.msg-chat .chat-bubble {
+    background: var(--chat-bg);
+    border-left: 2px solid var(--chat-border);
+    padding: 0.45em 0.85em; border-radius: 0 4px 4px 0;
+    font-size: 15px; color: #b8a9c9; line-height: 1.8;
+}
+.white-bg .msg-chat .chat-bubble {
+    background: var(--chat-bg-dark);
+    border-left-color: rgba(100,90,120,0.2); color: #5a4a6a;
+}
+.msg-chat.mine .chat-bubble {
+    background: rgba(122,154,138,0.07);
+    border-left: none; border-right: 2px solid rgba(122,154,138,0.18);
+    border-radius: 4px 0 0 4px; color: #a9b8a9; text-align: right;
+}
+.white-bg .msg-chat.mine .chat-bubble {
+    background: rgba(80,120,100,0.06);
+    border-right-color: rgba(80,120,100,0.2); color: #4a6a5a;
+}
+.msg-chat.mine .chat-speaker { color: #7a9a8a; }
+.white-bg .msg-chat.mine .chat-speaker { color: #5a8a6a; }
+
+/* Choice buttons */
+.choices-wrap {
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.6em; width: 100%; padding: 0.8em 0;
+    animation: fadeUp 0.5s ease forwards;
+}
+.choice-btn {
+    background: rgba(196,168,130,0.06);
+    border: 1px solid rgba(196,168,130,0.25);
+    color: #c4a882; padding: 0.7em 1.4em;
+    font-family: inherit; font-size: 15px;
+    border-radius: 4px; cursor: pointer;
+    letter-spacing: 0.06em; min-width: 200px;
+    transition: all 0.3s ease;
+}
+.choice-btn:hover {
+    background: rgba(196,168,130,0.15);
+    border-color: rgba(196,168,130,0.5);
+    color: #d4b892; box-shadow: 0 0 20px rgba(196,168,130,0.08);
+}
+.choice-btn.chosen {
+    background: rgba(196,168,130,0.12);
+    border-color: rgba(196,168,130,0.3);
+    color: #9a8a6a; pointer-events: none; opacity: 0.6;
+}
+.choice-prompt {
+    text-align: center; font-size: 16px;
+    color: #b8a080; padding: 0.3em 0; letter-spacing: 0.06em;
+}
+.proceed-btn {
+    background: rgba(196,168,130,0.1);
+    border: 1px solid rgba(196,168,130,0.35);
+    color: #d4b892; padding: 0.6em 2em;
+    font-family: inherit; font-size: 14px;
+    border-radius: 4px; cursor: pointer;
+    letter-spacing: 0.1em; margin-top: 0.4em;
+    transition: all 0.3s ease; animation: fadeUp 0.5s ease forwards;
+}
+.proceed-btn:hover {
+    background: rgba(196,168,130,0.2);
+    border-color: rgba(196,168,130,0.55);
+    box-shadow: 0 0 24px rgba(196,168,130,0.1);
+}
+
+/* Cards */
+.msg-identity, .msg-rules {
+    width: 100%; animation: fadeUp 0.8s ease forwards; padding: 0.3em 0;
+}
+.identity-card, .rules-card {
+    background: var(--card-bg); border: 1px solid var(--card-border);
+    border-radius: 4px; padding: 1.4em; line-height: 1.9;
+    max-height: 70vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+}
+.white-bg .identity-card, .white-bg .rules-card {
+    background: rgba(255,255,255,0.95); border-color: rgba(0,0,0,0.06);
+}
+.card-title {
+    font-size: 15px; color: var(--amber); text-align: center;
+    letter-spacing: 0.2em; margin-bottom: 0.8em;
+}
+.card-section {
+    font-size: 13px; color: #7a7a7a; letter-spacing: 0.1em;
+    margin-top: 0.8em; margin-bottom: 0.2em; font-weight: 500;
+}
+.white-bg .card-section { color: #666; }
+.card-text { font-size: 15px; color: #b8b8b8; }
+.white-bg .card-text { color: #3a3a3a; }
+.card-task { font-size: 14px; color: #a9a0b8; margin-top: 0.3em; }
+.white-bg .card-task { color: #6a6078; }
+.card-blur {
+    color: #6a6a6a; background: rgba(150,150,150,0.15);
+    padding: 0.1em 0.4em; border-radius: 2px; letter-spacing: 0.15em;
+}
+.card-update .card-blur { color: #c4a882; background: rgba(196,168,130,0.15); }
+
+/* Notice */
+.msg-notice {
+    width: 100%; animation: fadeUp 0.7s ease forwards; padding: 0.3em 0;
+}
+.notice-card {
+    background: var(--notice-bg); border: 1px solid var(--notice-border);
+    border-radius: 4px; padding: 1.4em; line-height: 2;
+    max-width: 95%; margin: 0 auto; font-size: 14px;
+}
+.white-bg .notice-card { background: rgba(200,180,150,0.06); border-color: rgba(200,180,150,0.2); }
+.notice-card .notice-header {
+    text-align: center; font-size: 16px; font-weight: bold;
+    color: var(--amber); margin-bottom: 0.8em; letter-spacing: 0.1em;
+}
+.notice-card .notice-meta { font-size: 12px; color: #8a8a8a; margin-bottom: 0.6em; line-height: 1.8; }
+.notice-card .notice-body { line-height: 2.2; }
+.notice-card .notice-footer { text-align: right; margin-top: 1em; font-size: 13px; color: #9a9a9a; line-height: 2; }
+.notice-card .notice-highlight { color: var(--amber); font-weight: bold; }
+
+/* Toolbar */
+#toolbar {
+    position: fixed; top: 1.2em; left: 1.2em;
+    display: flex; gap: 0.6em; z-index: 20;
+}
+.tool-btn {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #7a7a7a; font-size: 11px;
+    padding: 0.35em 0.8em; border-radius: 3px;
+    letter-spacing: 0.08em; cursor: pointer;
+    font-family: inherit; transition: all 0.25s;
+}
+.tool-btn:hover { background: rgba(255,255,255,0.08); color: #b8b8b8; border-color: rgba(255,255,255,0.2); }
+.tool-btn.hidden-btn { opacity: 0; pointer-events: none; }
+#sel-chapter { appearance: auto; -webkit-appearance: auto; cursor: pointer; max-width: 110px; }
+#sel-chapter option { background: #1a1a1a; color: #b8b8b8; }
+
+/* Progress */
+#progress {
+    position: fixed; top: 1.5em; right: 1.5em;
+    color: #3a3a3a; font-size: 11px; letter-spacing: 0.1em;
+    pointer-events: none; z-index: 10; transition: opacity 0.6s ease;
+}
+#hint {
+    position: fixed; bottom: 2.5em; left: 50%; transform: translateX(-50%);
+    color: #3a3a3a; font-size: 12px; letter-spacing: 0.2em;
+    transition: opacity 0.6s ease; pointer-events: none; z-index: 10;
+}
+
+/* Overlays */
+#history-panel, #identity-overlay, #rules-overlay {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(6,6,6,0.97); z-index: 30;
+    overflow-y: auto; padding: 2.5em 1.5em 2em;
+    display: none; flex-direction: column;
+}
+#history-panel.open, #identity-overlay.open, #rules-overlay.open { display: flex; }
+#history-panel .history-header {
+    position: sticky; top:0; display: flex;
+    justify-content: space-between; align-items: center;
+    padding: 0.5em 0; background: rgba(6,6,6,0.95); z-index:2; gap:0.5em;
+}
+.history-nav, .overlay-close-btn {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #9a9a9a; font-size: 11px;
+    padding: 0.35em 0.8em; border-radius: 3px;
+    letter-spacing: 0.08em; cursor: pointer;
+    font-family: inherit; transition: all 0.25s;
+}
+.history-nav:hover { background: rgba(255,255,255,0.08); color: #c0c0c0; }
+.history-nav:disabled { opacity: 0.3; pointer-events: none; }
+#history-panel .history-chapter-title {
+    font-size: 13px; color: var(--amber); letter-spacing: 0.1em;
+    text-align: center; flex:1;
+}
+#history-panel .history-item {
+    font-size: 15px; color: #9a9a9a; line-height: 1.9;
+    padding: 0.3em 0; border-bottom: 1px solid rgba(255,255,255,0.02);
+}
+#history-panel .history-item.current { color: #e0e0e0; font-weight: 500; }
+.overlay-inner { max-width: 500px; width: 100%; margin: 0 auto; }
+
+/* Screen effects */
+.screen-flash {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(255,200,100,0.06); pointer-events: none; z-index: 5;
+    animation: flashOverlay 0.6s ease-out;
+}
+.screen-shake-overlay {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    pointer-events: none; z-index: 5;
+    animation: screenShake 0.5s ease;
+}
+
+/* Animations */
+@keyframes fadeUp {
+    from { opacity:0; transform: translateY(14px); }
+    to { opacity:1; transform: translateY(0); }
+}
+@keyframes screenShake {
+    0%,100% { transform: translateX(0); }
+    10% { transform: translateX(-6px); }
+    20% { transform: translateX(5px); }
+    30% { transform: translateX(-4px); }
+    40% { transform: translateX(3px); }
+    50% { transform: translateX(-2px); }
+    60% { transform: translateX(1px); }
+    70% { transform: translateX(-1px); }
+    80% { transform: translateX(0.5px); }
+}
+@keyframes gentleShake {
+    0%,100% { transform: translateY(0); }
+    20% { transform: translateY(-3px); }
+    40% { transform: translateY(2px); }
+    60% { transform: translateY(-2px); }
+    80% { transform: translateY(1px); }
+}
+@keyframes flashOverlay {
+    0% { opacity:0.5; } 100% { opacity:0; }
+}
+@keyframes pulseGlow {
+    0%,100% { box-shadow: 0 0 8px rgba(196,168,130,0.05); }
+    50% { box-shadow: 0 0 20px rgba(196,168,130,0.15); }
+}
+
+/* Highlight */
+.highlight-yellow { color: #e8d44d; font-weight: bold; animation: pulseBold 0.6s ease; }
+@keyframes pulseBold {
+    0% { transform: scale(1); } 50% { transform: scale(1.12); } 100% { transform: scale(1); }
+}
+
+/* Struggle button */
+.struggle-btn {
+    background: rgba(196,168,130,0.08);
+    border: 1px solid rgba(196,168,130,0.3);
+    color: #d4b892; padding: 0.6em 2em;
+    font-family: inherit; border-radius: 4px;
+    cursor: pointer; letter-spacing: 0.12em;
+    transition: all 0.3s ease;
+    animation: fadeUp 0.5s ease forwards;
+}
+.struggle-btn:hover {
+    background: rgba(196,168,130,0.18);
+    border-color: rgba(196,168,130,0.5);
+    box-shadow: 0 0 20px rgba(196,168,130,0.1);
+}
+
+/* Black camera flash */
+.screen-flash-black {
+    position: fixed; top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.88); pointer-events: none; z-index: 5;
+    animation: blackFlash 0.4s ease-out;
+}
+@keyframes blackFlash {
+    0% { opacity:1; } 100% { opacity:0; }
+}
+
+/* White burst transition */
+.white-burst {
+    position: fixed; top:50%; left:50%;
+    width:0; height:0;
+    background: #efede8;
+    border-radius: 50%;
+    pointer-events: none; z-index: 6;
+    transform: translate(-50%, -50%);
+    animation: whiteBurst 0.9s ease-out forwards;
+}
+@keyframes whiteBurst {
+    0% { width:0; height:0; opacity:0.9; }
+    40% { width:20vmax; height:20vmax; opacity:1; }
+    100% { width:200vmax; height:200vmax; opacity:1; }
+}
+
+/* Stronger shake */
+@keyframes screenShakeStrong {
+    0%,100% { transform: translateX(0); }
+    10% { transform: translateX(-14px); }
+    20% { transform: translateX(12px); }
+    30% { transform: translateX(-10px); }
+    40% { transform: translateX(8px); }
+    50% { transform: translateX(-5px); }
+    60% { transform: translateX(4px); }
+    70% { transform: translateX(-2px); }
+    80% { transform: translateX(1px); }
+}
+
+/* Button shake on error */
+@keyframes btnShakeErr {
+    0%,100% { transform: translateX(0); }
+    15% { transform: translateX(-8px); }
+    30% { transform: translateX(7px); }
+    45% { transform: translateX(-5px); }
+    60% { transform: translateX(3px); }
+    75% { transform: translateX(-1px); }
+}
+.btn-shake-err {
+    animation: btnShakeErr 0.5s ease, fadeOut 0.3s ease 0.5s forwards;
+}
+@keyframes fadeOut {
+    to { opacity:0; transform: translateY(8px); }
+}
+
+@media (max-width: 500px) {
+    #app { padding: 1.5em 1em 4em; }
+    .msg-narration { font-size: 16px; }
+    .msg-thought { font-size: 15px; }
+    .msg-dialogue .bubble { font-size: 16px; padding: 0.1em 0 0.1em 0.65em; max-width: 92%; }
+    .msg-chat .chat-bubble { font-size: 14px; }
+    .msg-chapter { font-size: 28px; }
+    .card-text { font-size: 14px; }
+    .notice-card { font-size: 13px; }
+    .cover .cover-title { font-size: 22px; }
+    #toolbar { top:0.8em; left:0.8em; gap:0.4em; }
+    .tool-btn { font-size: 10px; padding: 0.3em 0.6em; }
+}
+</style>
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex"><meta name="googlebot" content="noindex, nofollow, noarchive, nosnippet, noimageindex"><meta name="bingbot" content="noindex, nofollow, noarchive, nosnippet, noimageindex"></head>
+<body>
+<div id="particles"></div>
+<div id="toolbar">
+    <button class="tool-btn hidden-btn" id="btn-history">历史</button>
+    <button class="tool-btn hidden-btn" id="btn-rules">规则</button>
+    <button class="tool-btn hidden-btn" id="btn-identity">身份卡</button>
+    <select class="tool-btn hidden-btn" id="sel-chapter"></select>
+</div>
+<div id="app"><div id="display"></div></div>
+<div id="progress"></div>
+<div id="hint">轻触继续</div>
+
+<div id="history-panel">
+    <div class="history-header">
+        <button class="history-nav" id="history-prev">◀ 上一页</button>
+        <span class="history-chapter-title" id="history-chapter-title"></span>
+        <button class="history-nav" id="history-next">下一页 ▶</button>
+        <button class="overlay-close-btn" id="history-close">关闭 ✕</button>
+    </div>
+    <div id="history-list"></div>
+</div>
+
+<div id="identity-overlay">
+    <div class="overlay-inner">
+        <div style="text-align:right;padding:0.4em 0;position:sticky;top:0;background:rgba(6,6,6,0.9);z-index:2">
+            <button class="overlay-close-btn" id="identity-close">关闭 ✕</button>
+        </div>
+        <div id="identity-content"></div>
+    </div>
+</div>
+
+<div id="rules-overlay">
+    <div class="overlay-inner">
+        <div style="text-align:right;padding:0.4em 0;position:sticky;top:0;background:rgba(6,6,6,0.9);z-index:2">
+            <button class="overlay-close-btn" id="rules-close">关闭 ✕</button>
+        </div>
+        <div id="rules-content"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // ─── DOM refs ────────────────────────────────
+    const display = document.getElementById('display');
+    const hint = document.getElementById('hint');
+    const progressEl = document.getElementById('progress');
+    const app = document.getElementById('app');
+    const particles = document.getElementById('particles');
+    const btnHistory = document.getElementById('btn-history');
+    const btnRules = document.getElementById('btn-rules');
+    const btnIdentity = document.getElementById('btn-identity');
+    const selChapter = document.getElementById('sel-chapter');
+    const historyPanel = document.getElementById('history-panel');
+    const historyList = document.getElementById('history-list');
+    const historyClose = document.getElementById('history-close');
+    const historyPrev = document.getElementById('history-prev');
+    const historyNext = document.getElementById('history-next');
+    const historyChapterTitle = document.getElementById('history-chapter-title');
+    const identityOverlay = document.getElementById('identity-overlay');
+    const identityContent = document.getElementById('identity-content');
+    const identityClose = document.getElementById('identity-close');
+    const rulesOverlay = document.getElementById('rules-overlay');
+    const rulesContent = document.getElementById('rules-content');
+    const rulesClose = document.getElementById('rules-close');
+
+    // ─── Particles ───────────────────────────────
+    function createParticles() {
+        const frag = document.createDocumentFragment();
+        for (let i = 0; i < 30; i++) {
+            const el = document.createElement('div');
+            el.className = 'ember';
+            el.style.left = Math.random() * 100 + '%';
+            el.style.bottom = Math.random() * 100 + '%';
+            el.style.width = el.style.height = (1.5 + Math.random() * 3) + 'px';
+            el.style.setProperty('--dur', (6 + Math.random() * 14) + 's');
+            el.style.setProperty('--delay', Math.random() * 12 + 's');
+            el.style.setProperty('--drift', (Math.random() - 0.5) * 80 + 'px');
+            frag.appendChild(el);
+        }
+        particles.appendChild(frag);
+    }
+    createParticles();
+
+    // ─── Flash / Shake effects ──────────────────
+    function makeFlash() {
+        const el = document.createElement('div');
+        el.className = 'screen-flash';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 600);
+    }
+    function makeShake() {
+        const el = document.createElement('div');
+        el.className = 'screen-shake-overlay';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 500);
+    }
+    function makeBlackFlash() {
+        const el = document.createElement('div');
+        el.className = 'screen-flash-black';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 400);
+    }
+    function makeWhiteBurst() {
+        const el = document.createElement('div');
+        el.className = 'white-burst';
+        document.body.appendChild(el);
+        setTimeout(() => {
+            el.remove();
+            document.body.classList.add('white-bg');
+        }, 900);
+    }
+    function makeShakeLevel(level) {
+        const el = document.createElement('div');
+        el.className = 'screen-shake-overlay';
+        if (level >= 2) { el.style.animationName = 'screenShakeStrong'; el.style.animationDuration = '0.6s'; }
+        if (level >= 3) { el.style.animationDuration = '0.7s'; }
+        if (level >= 4) { el.style.animationDuration = '0.85s'; }
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), level >= 4 ? 850 : (level >= 2 ? 700 : 500));
+    }
+    function showStruggle(msg, callback) {
+        inputLocked = true;
+        hint.style.opacity = '0';
+        display.innerHTML = '';
+        if (msg.narration) {
+            const n = document.createElement('div');
+            n.className = 'msg-narration';
+            n.textContent = msg.narration;
+            display.appendChild(n);
+        }
+        const wrap = document.createElement('div');
+        wrap.className = 'choices-wrap';
+        const btn = document.createElement('button');
+        btn.className = 'struggle-btn';
+        btn.textContent = msg.text || '挣扎';
+        const sz = msg.size || 1;
+        btn.style.fontSize = (14 + sz * 4) + 'px';
+        btn.style.padding = (0.5 + sz * 0.2) + 'em ' + (1.6 + sz * 0.6) + 'em';
+        btn.style.letterSpacing = (0.1 + sz * 0.03) + 'em';
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            makeShakeLevel(msg.shake || 1);
+            inputLocked = false;
+            hint.style.opacity = '1';
+            callback();
+        });
+        wrap.appendChild(btn);
+        display.appendChild(wrap);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // ─── Identity & Rules HTML ───────────────────
+    let identityBlurRevealed = false;
+
+    const rulesBaseHTML = `<div class="rules-card">
+        <div class="card-title">游戏规则</div>
+        <div class="card-text" style="text-align:center;margin-bottom:0.6em;">欢迎游玩《大火开始前的三零零分钟》</div>
+        <div class="card-section">游玩时长</div>
+        <div class="card-text">本剧本杀预计游玩时间为：三百分钟（即五小时）。</div>
+        <div class="card-section">回合结构</div>
+        <div class="card-text">游戏分为五个回合进行，每个回合固定安排如下：</div>
+        <div class="card-text">① 10分钟讨论（安全屋内）</div>
+        <div class="card-text">② 20分钟自由探索（商场内）</div>
+        <div class="card-text">③ 10分钟讨论（安全屋内）</div>
+        <div class="card-text">④ 20分钟自由探索（商场内）</div>
+        <div class="card-section">通讯工具</div>
+        <div class="card-text">· 每人配备一部对讲机，可联系队友或工作人员。</div>
+    </div>`;
+
+    function getIdentityHTML() {
+        const blurClass = identityBlurRevealed ? ' card-update' : '';
+        const blurText = identityBlurRevealed ? '裁决林建国' : 'XXXX（一片被糊住的字）';
+        return `<div class="identity-card${blurClass}">
+            <div class="card-title">身份卡</div>
+            <div class="card-section">角色身份</div><div class="card-text">大小姐</div>
+            <div class="card-section">身份设定</div>
+            <div class="card-text">你是林建国的女儿。而林建国是你的父亲——一名商业地产开发商——也是这座城市里最有钱的那批人之一。</div>
+            <div class="card-text">你很少见到那个男人，无论是过去还是现在。他总是在忙，在开会，在出差，在电话那头说"下次一定"。</div>
+            <div class="card-text">你小时候最喜欢问为什么。这是什么？那是什么？为什么天是蓝的？为什么爸爸总是不在家？他难得回来的时候，总是被你问到头疼。</div>
+            <div class="card-text">于是有一天他蹲下来，把手机递给你，说："你看，在这里面，你拍什么它就告诉你是什么。爸爸公司做的。你想知道的东西，就问这个软件吧。"那是他为数不多的耐心时刻。</div>
+            <div class="card-text">后来你用这个App拍了无数东西——树叶、云、蚂蚁、妈妈的花瓶。它从没出过错。</div>
+            <div class="card-text">哪怕你的父母已经离婚，你仍然留着它。</div>
+            <div class="card-section">你的秘密</div>
+            <div class="card-text">你知道繁华城是父亲的资产，但母亲从未允许你去过那地方。</div>
+            <div class="card-text">一提到这三个字，你的父母就会吵架。他们愈演愈烈，直到分道扬镳。</div>
+            <div class="card-text">你不知道父亲为什么生气。就像后来母亲牵着你的手往别墅外走，你也不知道路的终点在哪里。</div>
+            <div class="card-section">专属道具</div>
+            <div class="card-text">一部旧手机。当年的App还在。在探索过程中，你可以打开它拍摄现场的任何物品，系统会告诉你那是什么。</div>
+            <div class="card-section">你的任务</div>
+            <div class="card-task">· 主线：找出大火的真相。</div>
+            <div class="card-task">· 支线：罪孽。在第三回合开始之前找出<span class="card-blur">${blurText}</span>的证据，否则你的专属道具会失效！</div>
+        </div>`;
+    }
+
+    // ─── Chapter tracking ────────────────────────
+    let chapterStarts = [];
+    let chapterNames = [];
+
+    function buildChapterIndex(messages) {
+        chapterStarts = [];
+        chapterNames = [];
+        let ch = 0;
+        messages.forEach((msg, i) => {
+            if (msg.type === 'chapter') {
+                ch++;
+                chapterStarts.push({ chapter: ch, start: i });
+            }
+        });
+    }
+
+    const CHAPTER_LABELS = {
+        1: '开场·车队拼车',
+        2: 'DM讲故事·身份卡',
+        3: '初入繁华城',
+        4: '接待通知·林建国',
+        5: '家具城探索',
+        6: '啼哭者·第二回合',
+        7: '分头行动',
+        8: '裁决准备',
+        9: '裁决·林建国'
+    };
+
+    function populateChapterSelect() {
+        selChapter.innerHTML = '<option value="">跳转章节</option>';
+        chapterStarts.forEach(cs => {
+            const opt = document.createElement('option');
+            opt.value = cs.start;
+            opt.textContent = `第${cs.chapter}章${CHAPTER_LABELS[cs.chapter] ? ' · ' + CHAPTER_LABELS[cs.chapter] : ''}`;
+            selChapter.appendChild(opt);
+        });
+    }
+
+    function jumpToChapter(startIndex) {
+        if (!gameStarted) startGame();
+        // Reset all state
+        inputLocked = false;
+        revealQueue = [];
+        revealIdx = 0;
+        onRevealDone = null;
+        chatGroupActive = false;
+        chatGroupMsgs = [];
+        chatGroupIdx = 0;
+        waitingForClear = false;
+        branchActive = false;
+        branchMessages = [];
+        branchIdx = 0;
+        isAnimating = false;
+        // Restore background based on position
+        const needsWhite = messages.slice(0, startIndex + 1).some(m => m.type === 'whitetransition') &&
+                          !messages.slice(0, startIndex + 1).some(m => m.type === 'darktransition' &&
+                              messages.indexOf(m) > messages.slice(0, startIndex + 1).filter(x => x.type === 'whitetransition').length);
+        // Simple approach: scan messages before startIndex, last transition type wins
+        let isWhite = false;
+        for (let i = 0; i <= startIndex; i++) {
+            if (messages[i].type === 'whitetransition') isWhite = true;
+            if (messages[i].type === 'darktransition') isWhite = false;
+        }
+        if (isWhite) document.body.classList.add('white-bg');
+        else document.body.classList.remove('white-bg');
+        currentIndex = startIndex;
+        display.innerHTML = '';
+        display.classList.remove('fading');
+        renderSingle(messages[currentIndex]);
+        updateProgress();
+        updateToolbarButtons();
+        hint.style.opacity = '1';
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function getChapterForIndex(idx) {
+        for (let i = chapterStarts.length - 1; i >= 0; i--) {
+            if (idx >= chapterStarts[i].start) return chapterStarts[i];
+        }
+        return { chapter: 0, start: 0 };
+    }
+
+    // ─── HISTORY_PAGE_SIZE ───────────────────────
+    const HISTORY_PAGE_SIZE = 15;
+
+    // ─── Game State ─────────────────────────────
+    let currentIndex = -1;
+    let isAnimating = false;
+    let gameStarted = false;
+    let historyOpen = false;
+    let currentHistoryPage = 0;
+    let chatGroupActive = false;
+    let chatGroupMsgs = [];
+    let chatGroupIdx = 0;
+    let waitingForClear = false;
+
+    // Choice state
+    let inputLocked = false;       // 锁定点击：选项出现时禁止空白处点击推进
+    let revealQueue = [];          // 选项揭示内容的消息队列（逐条展示）
+    let revealIdx = 0;
+    let onRevealDone = null;      // 揭示队列播完后的回调
+    let branchActive = false;
+    let branchMessages = [];
+    let branchIdx = 0;
+    let branchReturnIndex = -1;
+
+    // ─── Build all messages ──────────────────────
+    function buildAllMessages() {
+        // Branch path: 陆远
+        const branch_luyuan = [
+            { type:'narration', text:'陆远正低着头踱步，你看见他的双手在胸前比划着什么。', full:'陆远正低着头踱步，你看见他的双手在胸前比划着什么。' },
+            { type:'narration', text:'没有意料到你的靠近，他有些诧异地看向你，手上的动作也停了下来。', full:'没有意料到你的靠近，他有些诧异地看向你，手上的动作也停了下来。' },
+            { type:'dialogue', text:'"想请你帮个忙，"你指了指旁边的一家奶茶店，"方便坐下来聊聊吗。"', full:'"想请你帮个忙，"你指了指旁边的一家奶茶店，"方便坐下来聊聊吗。"' },
+            { type:'narration', text:'陆远笑了笑，"当然。"', full:'陆远笑了笑，"当然。"' },
+            { type:'narration', text:'落座在角落的一张迷你圆桌旁，你向陆远粗略描述了自己的隐藏任务。', full:'落座在角落的一张迷你圆桌旁，你向陆远粗略描述了自己的隐藏任务。' },
+            { type:'dialogue', text:'"林建国很快就要登场了，但现在我缺少关键的证据。"', full:'"林建国很快就要登场了，但现在我缺少关键的证据。"' },
+            { type:'dialogue', text:'你将额前的刘海利落地撩到耳后，"如果可以的话，你能在探索途中帮我留意一下吗？"', full:'你将额前的刘海利落地撩到耳后，"如果可以的话，你能在探索途中帮我留意一下吗？"' },
+            { type:'dialogue', text:'"当然可以。"陆远答应得格外爽快。', full:'"当然可以。"陆远答应得格外爽快。' },
+            { type:'dialogue', text:'"不过我有一个小小的请求。"', full:'"不过我有一个小小的请求。"' },
+            { type:'narration', text:'你看向他，刚想开口问的时候，身旁的赵野儿忽然打了个喷嚏。', full:'你看向他，刚想开口问的时候，身旁的赵野儿忽然打了个喷嚏。' },
+            { type:'dialogue', text:'"阿秋！"赵野儿揉了揉自己的鼻子，"你们继续，继续，我去找店员要张纸巾。"', full:'"阿秋！"赵野儿揉了揉自己的鼻子，"你们继续，继续，我去找店员要张纸巾。"' },
+            { type:'narration', text:'她急匆匆地跑开了。', full:'她急匆匆地跑开了。' },
+            { type:'narration', text:'你看向陆远摆出复杂姿势的双手，交叠的手指中间留出了一个小孔。', full:'你看向陆远摆出复杂姿势的双手，交叠的手指中间留出了一个小孔。' },
+            { type:'narration', text:'对方的请求很简单，只是希望你用道具对着他的手拍一张照。', full:'对方的请求很简单，只是希望你用道具对着他的手拍一张照。' },
+            { type:'narration', text:'这并不难，况且对你而言没有任何坏处。', full:'这并不难，况且对你而言没有任何坏处。' },
+            { type:'dialogue', text:'"咔嚓。"', full:'"咔嚓。"' },
+            { type:'narration', text:'一张平平无奇的照片，甚至连系统都没有给出任何的判定。', full:'一张平平无奇的照片，甚至连系统都没有给出任何的判定。' },
+            { type:'narration', text:'但陆远显然很满意，毕竟他脸上实打实地露出了笑容。', full:'但陆远显然很满意，毕竟他脸上实打实地露出了笑容。' },
+            { type:'narration', text:'他接过你的道具，放在手中看了又看。', full:'他接过你的道具，放在手中看了又看。' },
+            { type:'narration', text:'好几秒后，你听见陆远的声音。', full:'好几秒后，你听见陆远的声音。' },
+            { type:'dialogue', text:'"三楼家具城的经理室里，我上次探索的时候路过瞥了一眼，看见里面有个保险柜。"', full:'"三楼家具城的经理室里，我上次探索的时候路过瞥了一眼，看见里面有个保险柜。"' },
+            { type:'dialogue', text:'"我可以引开门口的人，你们的道具应该对找到保险柜密码有帮助。"', full:'"我可以引开门口的人，你们的道具应该对找到保险柜密码有帮助。"' },
+            { type:'dialogue', text:'"既然它有被藏起来的价值，或许那就是突破口。"', full:'"既然它有被藏起来的价值，或许那就是突破口。"' },
+            { type:'narration', text:'你凝视着陆远，对方根本没抬头，视线依旧在那张照片上。', full:'你凝视着陆远，对方根本没抬头，视线依旧在那张照片上。' },
+            { type:'narration', text:'你什么也没问，也没什么能问的。', full:'你什么也没问，也没什么能问的。' },
+            { type:'narration', text:'而此时，赵野儿回来了。', full:'而此时，赵野儿回来了。' },
+            { type:'narration', text:'她的面色有些难看，你发现她拿回来好几张中间被烧穿的纸巾。', full:'她的面色有些难看，你发现她拿回来好几张中间被烧穿的纸巾。' },
+            { type:'narration', text:'似乎在哪里见过……是李伟拿来点燃木板的那种？', full:'似乎在哪里见过……是李伟拿来点燃木板的那种？' },
+            { type:'dialogue', text:'"我们是不是得快一点，"赵野儿打了个寒颤，"总感觉这里真的要烧起来了。"', full:'"我们是不是得快一点，"赵野儿打了个寒颤，"总感觉这里真的要烧起来了。"' },
+            { type:'divider', text:'· · ·', full:'· · ·' },
+            { type:'narration', text:'陆远说到做到，他装作一副自来熟的模样揽走了经理室附近的员工。', full:'陆远说到做到，他装作一副自来熟的模样揽走了经理室附近的员工。' },
+            { type:'narration', text:'门没有上锁，只需要轻轻拧开把手就能找到陆远说的保险柜。', full:'门没有上锁，只需要轻轻拧开把手就能找到陆远说的保险柜。' },
+        ];
+
+        // Branch path: 李伟、苏小晚
+        const branch_liwei = [
+            { type:'narration', text:'是李伟和苏小晚。', full:'是李伟和苏小晚。' },
+            { type:'narration', text:'不知道为什么，苏小晚正一脸嗔怒地看着身边的男人，甚至忍不住轻打了一下对方的肩膀。', full:'不知道为什么，苏小晚正一脸嗔怒地看着身边的男人，甚至忍不住轻打了一下对方的肩膀。' },
+            { type:'narration', text:'而李伟也没还手，只是装作吃痛地跳开了，然后越走越远。', full:'而李伟也没还手，只是装作吃痛地跳开了，然后越走越远。' },
+            { type:'narration', text:'越走越远？', full:'越走越远？' },
+            { type:'narration', text:'你有些疑惑地看向苏小晚，而对方冲你撇了撇嘴。', full:'你有些疑惑地看向苏小晚，而对方冲你撇了撇嘴。' },
+            { type:'dialogue', text:'"他说肚子疼，要去厕所上个大的，"苏小晚没好气地说道，"真是多事！"', full:'"他说肚子疼，要去厕所上个大的，"苏小晚没好气地说道，"真是多事！"' },
+            { type:'narration', text:'你和赵野儿对视一眼，忍不住笑了笑。', full:'你和赵野儿对视一眼，忍不住笑了笑。' },
+            { type:'dialogue', text:'"好啦，"赵野儿拉上苏小晚的手，"这不是正好吗，我们一起行动吧！"', full:'"好啦，"赵野儿拉上苏小晚的手，"这不是正好吗，我们一起行动吧！"' },
+            { type:'dialogue', text:'你点了点头，"我有一个天大的难题，这回合搞不定的话我就没有道具用了。"', full:'你点了点头，"我有一个天大的难题，这回合搞不定的话我就没有道具用了。"' },
+            { type:'narration', text:'苏小晚微微瞪大了眼，"天呐！"', full:'苏小晚微微瞪大了眼，"天呐！"' },
+            { type:'narration', text:'你将自己的支线任务简要地说了说，"我现在只找到一些零星的证据，但感觉根本不关键。"', full:'你将自己的支线任务简要地说了说，"我现在只找到一些零星的证据，但感觉根本不关键。"' },
+            { type:'narration', text:'赵野儿也很头疼，"反正我是没什么头绪。"', full:'赵野儿也很头疼，"反正我是没什么头绪。"' },
+            { type:'narration', text:'苏小晚跟在你们身边，慢慢地走着，她沉思了好一会儿，没说话。', full:'苏小晚跟在你们身边，慢慢地走着，她沉思了好一会儿，没说话。' },
+            { type:'narration', text:'忽然，她像是想起来了什么，"或许我们可以去家具城再找找看，一个小员工都知道的东西，领导手里只会掌握更多。"', full:'忽然，她像是想起来了什么，"或许我们可以去家具城再找找看，一个小员工都知道的东西，领导手里只会掌握更多。"' },
+            { type:'narration', text:'你们的眼神碰撞在一起，一拍即合。', full:'你们的眼神碰撞在一起，一拍即合。' },
+            { type:'divider', text:'· · ·', full:'· · ·' },
+            { type:'narration', text:'在板材展示区的角落里，你们发现了一个门口半掩着的经理室。', full:'在板材展示区的角落里，你们发现了一个门口半掩着的经理室。' },
+            { type:'narration', text:'一路上没看见任何员工，想来全在为了即将接待董事长而忙碌。', full:'一路上没看见任何员工，想来全在为了即将接待董事长而忙碌。' },
+            { type:'dialogue', text:'"我和李伟上次没搜到这里，"苏小晚吐槽了一句，"这里太大了。"', full:'"我和李伟上次没搜到这里，"苏小晚吐槽了一句，"这里太大了。"' },
+            { type:'narration', text:'门后的房间很简陋，一张办公桌加一个展示柜。赵野儿的手电扫过之后，你们齐刷刷地看向柜子里一个发着光的保险箱。', full:'门后的房间很简陋，一张办公桌加一个展示柜。赵野儿的手电扫过之后，你们齐刷刷地看向柜子里一个发着光的保险箱。' },
+        ];
+
+        // Convergence after branch (both paths lead to safe cracking)
+        const converge_safe = [
+            { type:'narration', text:'准确地来说，是保险箱上的密码输入处有四个数字亮了起来。', full:'准确地来说，是保险箱上的密码输入处有四个数字亮了起来。' },
+            { type:'narration', text:'虽然不知道顺序的先后，但你的运气不错，第六次就试出了正确的密码。', full:'虽然不知道顺序的先后，但你的运气不错，第六次就试出了正确的密码。' },
+            { type:'narration', text:'小小的箱子，好几沓厚资料安静躺在其中。', full:'小小的箱子，好几沓厚资料安静躺在其中。' },
+            { type:'narration', text:'"滴滴。"', full:'"滴滴。"' },
+            { type:'narration', text:'意料之外的提示铃响起，它居然来自于你的道具手机。', full:'意料之外的提示铃响起，它居然来自于你的道具手机。' },
+            { type:'narration', text:'这玩意破天荒地响起来了，你从来不知道它还拥有消息提醒的功能。', full:'这玩意破天荒地响起来了，你从来不知道它还拥有消息提醒的功能。' },
+            { type:'narration', text:'手机解锁，是一条弹窗。', full:'手机解锁，是一条弹窗。' },
+            { type:'narration', text:'——恭喜！已发现「裁决林建国」的证据！', full:'——恭喜！已发现「裁决林建国」的证据！' },
+            { type:'narration', text:'你终于松了一口气，心中大石轰然落地。', full:'你终于松了一口气，心中大石轰然落地。' },
+            { type:'narration', text:'室外传来熙熙攘攘的声音，你们猫着腰，拿上资料快步溜到了经理室外面。', full:'室外传来熙熙攘攘的声音，你们猫着腰，拿上资料快步溜到了经理室外面。' },
+            { type:'narration', text:'幸好，一切顺利。', full:'幸好，一切顺利。' },
+            { type:'darktransition', full:'【黑色过渡】' },
+        ];
+
+        // Branch paths: 苏小晚 encounter (Chapter 10 → 11)
+        const branch_call_out = [
+            { type:'narration', text:'苏小晚看了看你，又看了看赵野儿，似乎是在确认你们的存在。', full:'苏小晚看了看你，又看了看赵野儿，似乎是在确认你们的存在。' },
+            { type:'narration', text:'随后，她哇的一声哭了出来，猛地扑进你怀里。', full:'随后，她哇的一声哭了出来，猛地扑进你怀里。' },
+        ];
+        const branch_stay_silent = [
+            { type:'narration', text:'苏小晚看了看你，又看了看赵野儿，似乎是在确认你们的存在。', full:'苏小晚看了看你，又看了看赵野儿，似乎是在确认你们的存在。' },
+            { type:'narration', text:'随后，她哇的一声哭了出来，猛地扑进赵野儿怀里。', full:'随后，她哇的一声哭了出来，猛地扑进赵野儿怀里。' },
+        ];
+        const converge_su = [];  // 汇合后继续主线
+
+        // Main message array
+        const msgs = [
+
+        // ══════ Chapter 1 ══════
+        { type:'chapter', text:'1.', full:'1.' },
+        { type:'narration', text:'《大火开始前的三零零分钟》，已经是你这些天来和两个闺蜜一起玩的第三场剧本杀了。', full:'《大火开始前的三零零分钟》，已经是你这些天来和两个闺蜜一起玩的第三场剧本杀了。' },
+        { type:'narration', text:'不同于前两场欢乐本的定位，这一次，预约订票的页面明明白白写着微恐演绎。', full:'不同于前两场欢乐本的定位，这一次，预约订票的页面明明白白写着微恐演绎。' },
+        { type:'narration', text:'你搓了搓胳膊，感觉鸡皮疙瘩在往外掉。', full:'你搓了搓胳膊，感觉鸡皮疙瘩在往外掉。' },
+        { type:'narration', text:'都怪赵野儿……不对，都怪赵野儿喜欢的那个博主，谁叫他突然连更了好几条通宵剧本杀的vlog，给这小妮子看得那叫一个跃跃欲试。', full:'都怪赵野儿……不对，都怪赵野儿喜欢的那个博主，谁叫他突然连更了好几条通宵剧本杀的vlog，给这小妮子看得那叫一个跃跃欲试。' },
+        { type:'narration', text:'似乎是听到了你的心里话，坐在你右侧的赵野儿突然抱住了你，然后长长地哀嚎了一声。', full:'似乎是听到了你的心里话，坐在你右侧的赵野儿突然抱住了你，然后长长地哀嚎了一声。' },
+        { type:'dialogue', text:'"干嘛呀？"你看向她。', full:'"干嘛呀？"你看向她。' },
+        { type:'dialogue', text:'赵野儿又嚎了一声，"我好想收到我家哥哥十年前的那个联名周边啊，事后草真的太难受了。"', full:'赵野儿又嚎了一声，"我好想收到我家哥哥十年前的那个联名周边啊，事后草真的太难受了。"' },
+        { type:'narration', text:'她将自己的手机屏幕在你面前晃了晃，上面是一款知名美妆的礼盒，而她喜欢的那位明星正正好地被印在中间。', full:'她将自己的手机屏幕在你面前晃了晃，上面是一款知名美妆的礼盒，而她喜欢的那位明星正正好地被印在中间。' },
+        { type:'dialogue', text:'"我觉得这张照片把他拍得特别帅，真的！"', full:'"我觉得这张照片把他拍得特别帅，真的！"' },
+        { type:'dialogue', text:'你拍了拍她环在你胸前的双手，"发个帖蹲一蹲总会有的。"', full:'你拍了拍她环在你胸前的双手，"发个帖蹲一蹲总会有的。"' },
+        { type:'dialogue', text:'"发了，但感觉我的预算没什么机会，"赵野儿将头靠在你的肩膀上，"市面上的都是超级H价，我买不起。"', full:'"发了，但感觉我的预算没什么机会，"赵野儿将头靠在你的肩膀上，"市面上的都是超级H价，我买不起。"' },
+        { type:'narration', text:'你只能摸一摸她的手背，以表安慰。', full:'你只能摸一摸她的手背，以表安慰。' },
+        { type:'narration', text:'赵野儿深深地叹了一口气，随后像充气长条人似的缩回到了座位上。', full:'赵野儿深深地叹了一口气，随后像充气长条人似的缩回到了座位上。' },
+        { type:'dialogue', text:'"我一定会蹲到好价的。"你听见她的嘀咕。', full:'"我一定会蹲到好价的。"你听见她的嘀咕。' },
+        { type:'divider', text:'· · ·', full:'· · ·' },
+        { type:'narration', text:'人还没到齐，DM也还没有来，你索性拿起桌上突然亮起的手机——你们这次的车队群聊有了新消息。', full:'人还没到齐，DM也还没有来，你索性拿起桌上突然亮起的手机——你们这次的车队群聊有了新消息。' },
+        { type:'chat', speaker:'李伟', text:'救命啊程哥，我还有五分钟就到了，但我带来的朋友临时说要去和心动女嘉宾告白，把我给鸽了！', isMine:false, isGroup:true, full:'李伟：救命啊程哥，我还有五分钟就到了，但我带来的朋友临时说要去和心动女嘉宾告白，把我给鸽了！' },
+        { type:'narration', text:'这人是李伟，苏小晚新认识的crush，对你们的剧本杀大业格外给面，每次你们三等二的时候，都是他抓走身边的怨种朋友，充当你们的最后两块拼图。', full:'这人是李伟，苏小晚新认识的crush，对你们的剧本杀大业格外给面，每次你们三等二的时候，都是他抓走身边的怨种朋友，充当你们的最后两块拼图。' },
+        { type:'narration', text:'但这一次，看起来似乎出了点意外？', full:'但这一次，看起来似乎出了点意外？' },
+        { type:'chat', speaker:'李伟', text:'@DM程，能不能帮忙推个车啊，我旷了课来的，我不想回去上课。。', isMine:false, isGroup:true, full:'李伟：@DM程，能不能帮忙推个车啊，我旷了课来的，我不想回去上课。。' },
+        { type:'narration', text:'"噗，"坐在你左手边的苏小晚突然笑了一声，"这人怎么这么搞笑。"', full:'"噗，"坐在你左手边的苏小晚突然笑了一声，"这人怎么这么搞笑。"' },
+        { type:'narration', text:'你听见美甲敲击屏幕的声音，随后一条新消息从聊天框中跳出来。', full:'你听见美甲敲击屏幕的声音，随后一条新消息从聊天框中跳出来。' },
+        { type:'chat', speaker:'苏小晚', text:'要是拼不到人你也别来了，去找个女嘉宾告白一下得了@李伟', isMine:false, isGroup:true, full:'苏小晚：要是拼不到人你也别来了，去找个女嘉宾告白一下得了@李伟' },
+        { type:'chat', speaker:'李伟', text:'哎呦，我和我的女嘉宾还没到那一步呢，总之程哥救我——', isMine:false, isGroup:true, full:'李伟：哎呦，我和我的女嘉宾还没到那一步呢，总之程哥救我——' },
+        { type:'chat', speaker:'DM程', text:'「一个奶龙敬礼的表情包」', isMine:false, isGroup:true, full:'DM程：「一个奶龙敬礼的表情包」' },
+        { type:'chat', speaker:'DM程', text:'给你发朋友圈推一下。', isMine:false, isGroup:true, full:'DM程：给你发朋友圈推一下。' },
+        { type:'chat', speaker:'DM程', text:'不过我有个新来的同事，还没玩过这个本，让他来跟你们拼行吗？刚好也让他熟悉一下流程。', isMine:false, isGroup:true, full:'DM程：不过我有个新来的同事，还没玩过这个本，让他来跟你们拼行吗？刚好也让他熟悉一下流程。' },
+        { type:'chat', speaker:'DM程', text:'如果你们接受的话，票价一人优惠十元哦。', isMine:false, isGroup:true, full:'DM程：如果你们接受的话，票价一人优惠十元哦。' },
+        { type:'dialogue', text:'"蚊子腿也是肉呀，"赵野儿说着，看向你和苏小晚，"反正我们也缺一个才能发车。"', full:'"蚊子腿也是肉呀，"赵野儿说着，看向你和苏小晚，"反正我们也缺一个才能发车。"' },
+        { type:'dialogue', text:'你点了点头，"我没意见，小晚呢？"', full:'你点了点头，"我没意见，小晚呢？"' },
+        { type:'dialogue', text:'苏小晚嘀咕着："总不能真让他回去上课，拼吧。"', full:'苏小晚嘀咕着："总不能真让他回去上课，拼吧。"' },
+        { type:'chat', speaker:'你', text:'可以，能发车就好。', isMine:true, isGroup:true, full:'你：可以，能发车就好。' },
+        { type:'chat', speaker:'DM程', text:'OK', isMine:false, isGroup:true, full:'DM程：OK' },
+        { type:'narration', text:'不会再有新的消息了。你将手机熄屏放在桌上，身体微微后仰靠住椅背。', full:'不会再有新的消息了。你将手机熄屏放在桌上，身体微微后仰靠住椅背。' },
+        { type:'narration', text:'外面传来隐约的脚步声，随后被推开的门发出一声吱呀。', full:'外面传来隐约的脚步声，随后被推开的门发出一声吱呀。' },
+        { type:'narration', text:'剧本杀，要开始了。', full:'剧本杀，要开始了。' },
+
+        // ══════ Chapter 2 ══════
+        { type:'chapter', text:'2.', full:'2.' },
+        { type:'narration', text:'室内的灯被关上之后，只剩DM带来的一罐墨绿色香薰蜡烛，在桌上孤苦伶仃地发着光。', full:'室内的灯被关上之后，只剩DM带来的一罐墨绿色香薰蜡烛，在桌上孤苦伶仃地发着光。' },
+        { type:'narration', text:'程说这个蜡烛的香味将会很独特，但你暂时没闻到它的味道。', full:'程说这个蜡烛的香味将会很独特，但你暂时没闻到它的味道。' },
+        { type:'narration', text:'一本略带褶皱的身份卡被递到你手上，上面写着三个字：大小姐。', full:'一本略带褶皱的身份卡被递到你手上，上面写着三个字：大小姐。' },
+        { type:'dialogue', text:'"那么，在阅读自己的身份卡之前，我先来给大家讲一下这个故事的背景。"', full:'"那么，在阅读自己的身份卡之前，我先来给大家讲一下这个故事的背景。"' },
+        { type:'narration', text:'尽职的DM坐在桌子最前面，背后是一块和电视一样大的移动白板。', full:'尽职的DM坐在桌子最前面，背后是一块和电视一样大的移动白板。' },
+        { type:'narration', text:'程翻开主持人手册，随后压低声音将故事娓娓道来：', full:'程翻开主持人手册，随后压低声音将故事娓娓道来：' },
+        { type:'dialogue', text:'"欢迎各位来到《大火开始前的三零零分钟》，我是你们的DM，程，带你们走进这座商城背后的故事。"', full:'"欢迎各位来到《大火开始前的三零零分钟》，我是你们的DM，程，带你们走进这座商城背后的故事。"' },
+        { type:'dialogue', text:'"据传，在十年前的一个夜晚，繁华城发生过一场骇人听闻的大火。三天三夜的火舌将一切都吞噬，甚至带走了一位消防员的性命，而起火原因却至今都没有定论。而那令人心碎的伤亡人数，档案上写的更是——\'不详\'。"', full:'"据传，在十年前的一个夜晚，繁华城发生过一场骇人听闻的大火。三天三夜的火舌将一切都吞噬，甚至带走了一位消防员的性命，而起火原因却至今都没有定论。而那令人心碎的伤亡人数，档案上写的更是——\'不详\'。"' },
+        { type:'dialogue', text:'"随着时间的流逝，人们逐渐遗忘了这场悲剧，于是当年的开发商在原址之上重建起了又一座繁华城。"', full:'"随着时间的流逝，人们逐渐遗忘了这场悲剧，于是当年的开发商在原址之上重建起了又一座繁华城。"' },
+        { type:'dialogue', text:'"但奇怪的事情发生了。"', full:'"但奇怪的事情发生了。"' },
+        { type:'dialogue', text:'"每到那年亡人的忌日——这座商城都会在午夜之后自行亮灯。"', full:'"每到那年亡人的忌日——这座商城都会在午夜之后自行亮灯。"' },
+        { type:'dialogue', text:'"附近的居民反映，在夜跑路过时可以听到这灯火通明的无人之处居然传来纷乱的步伐声。更有附近楼盘的住户举报，商场半夜放歌扰民……"', full:'"附近的居民反映，在夜跑路过时可以听到这灯火通明的无人之处居然传来纷乱的步伐声。更有附近楼盘的住户举报，商场半夜放歌扰民……"' },
+        { type:'dialogue', text:'"这么久以来，不是没有人进去看过。但进去的人在出来之后，没有一个人能说清楚自己看到了什么。"', full:'"这么久以来，不是没有人进去看过。但进去的人在出来之后，没有一个人能说清楚自己看到了什么。"' },
+        { type:'narration', text:'程的声音忽然顿了一下，他扫视着场上的每一个人，然后将声音拔高。', full:'程的声音忽然顿了一下，他扫视着场上的每一个人，然后将声音拔高。' },
+        { type:'shake', text:'"而你们——是今晚被选中的\'目击者\'！"', full:'"而你们——是今晚被选中的\'目击者\'！"' },
+        { type:'dialogue', text:'"你们将进入这座商场，经历它在火灾当晚的最后五个小时。"', full:'"你们将进入这座商场，经历它在火灾当晚的最后五个小时。"' },
+        { type:'dialogue', text:'"请记住——"', full:'"请记住——"' },
+        { type:'dialogue', text:'"不管看到什么，不要太相信自己的眼睛。"', full:'"不管看到什么，不要太相信自己的眼睛。"' },
+        { type:'divider', text:'……', full:'……' },
+        { type:'narration', text:'将台本上的词讲完后，程冲着你们微笑了一下，"那么现在，请大家先独立阅读面前的身份卡，熟悉一下自己的设定。"', full:'将台本上的词讲完后，程冲着你们微笑了一下，"那么现在，请大家先独立阅读面前的身份卡，熟悉一下自己的设定。"' },
+        { type:'narration', text:'不得不说，程的演讲很有魅力，你确实有那么几秒沉浸在了他描述的那个故事里，现在才回过神来。', full:'不得不说，程的演讲很有魅力，你确实有那么几秒沉浸在了他描述的那个故事里，现在才回过神来。' },
+        { type:'narration', text:'你低下头，开始阅读面前的文字。', full:'你低下头，开始阅读面前的文字。' },
+        { type:'rules', full:'【游戏规则】' },
+        { type:'identity', full:'【身份卡：大小姐】' },
+        { type:'divider', text:'· · ·', full:'· · ·' },
+        { type:'narration', text:'窸窸窣窣的翻页声逐渐变小，你也阅读完了自己的身份卡。', full:'窸窸窣窣的翻页声逐渐变小，你也阅读完了自己的身份卡。' },
+        { type:'narration', text:'信息量不小，你需要消化一下。', full:'信息量不小，你需要消化一下。' },
+        { type:'narration', text:'你抬头，余光自然而然地瞥到了那个坐在你对面的陌生男人。', full:'你抬头，余光自然而然地瞥到了那个坐在你对面的陌生男人。' },
+        { type:'narration', text:'黑色的牛仔外套搭配上蓝色的格子衬衫，显而易见，他就是那个拼车的员工。', full:'黑色的牛仔外套搭配上蓝色的格子衬衫，显而易见，他就是那个拼车的员工。' },
+        { type:'thought', text:'奇怪，怎么好像没印象他是什么时候来的？', full:'奇怪，怎么好像没印象他是什么时候来的？' },
+        { type:'narration', text:'男人翻看着手中的本子，垂下的头发将眉眼遮了个完全，你看不清他的脸。', full:'男人翻看着手中的本子，垂下的头发将眉眼遮了个完全，你看不清他的脸。' },
+        { type:'narration', text:'一个寒颤莫名爬上了你的脊背，你忍不住微微抖了一下。', full:'一个寒颤莫名爬上了你的脊背，你忍不住微微抖了一下。' },
+        { type:'narration', text:'程一直安静地观察着你们，见所有人都停下动作之后，他将一堆道具搬到了桌面上。', full:'程一直安静地观察着你们，见所有人都停下动作之后，他将一堆道具搬到了桌面上。' },
+        { type:'dialogue', text:'"这些可是大用处的。"他一边故作玄虚地说着，一边将一部旧手机推到你的面前，除此之外，你还看见了其他东西——手电筒，打火机，玩具枪，对讲机，还有……一团棉花？', full:'"这些可是大用处的。"他一边故作玄虚地说着，一边将一部旧手机推到你的面前，除此之外，你还看见了其他东西——手电筒，打火机，玩具枪，对讲机，还有……一团棉花？' },
+        { type:'dialogue', text:'"都是些什么乱七八糟的。"你听见李伟吐槽了一声之后，被苏小晚轻轻地拍了一下手臂。', full:'"都是些什么乱七八糟的。"你听见李伟吐槽了一声之后，被苏小晚轻轻地拍了一下手臂。' },
+        { type:'narration', text:'哎！这该死的暧昧期！', full:'哎！这该死的暧昧期！' },
+        { type:'narration', text:'你将旧手机的屏幕摁亮，上面只有一个名为"识物"的App，看来它就是父亲给你留下的东西。', full:'你将旧手机的屏幕摁亮，上面只有一个名为"识物"的App，看来它就是父亲给你留下的东西。' },
+        { type:'dialogue', text:'程打了个响指，"来吧朋友们，做个自我介绍，先从离我最近的这位小姐开始，可以吗？"', full:'程打了个响指，"来吧朋友们，做个自我介绍，先从离我最近的这位小姐开始，可以吗？"' },
+        { type:'narration', text:'他指的是赵野儿，那么这样看来，下一个就轮到你了。', full:'他指的是赵野儿，那么这样看来，下一个就轮到你了。' },
+        { type:'thought', text:'任务分为主线和支线……不过这片被糊住的字是什么意思呢？', full:'任务分为主线和支线……不过这片被糊住的字是什么意思呢？' },
+        { type:'dialogue', text:'"当然可以。"赵野儿将合上的身份卡朝向你们，你看见上面写着三个字：冒险家。', full:'"当然可以。"赵野儿将合上的身份卡朝向你们，你看见上面写着三个字：冒险家。' },
+        { type:'dialogue', text:'"我是一个很喜欢逛商场的普通人，也可能是因为这样，我被今晚的繁华城邀请了。"她思考了一下，然后将手电筒举了起来："这是我的专属道具，可以正常照明，也有紫外线模式，不知道后面会有什么用。"', full:'"我是一个很喜欢逛商场的普通人，也可能是因为这样，我被今晚的繁华城邀请了。"她思考了一下，然后将手电筒举了起来："这是我的专属道具，可以正常照明，也有紫外线模式，不知道后面会有什么用。"' },
+        { type:'narration', text:'到你了。', full:'到你了。' },
+        { type:'narration', text:'你将身份卡给大家展示了一圈，当面向赵野儿的时候，你发现她的眼睛似乎亮了下。', full:'你将身份卡给大家展示了一圈，当面向赵野儿的时候，你发现她的眼睛似乎亮了下。' },
+        { type:'dialogue', text:'"我是开发商林建国的女儿，我的父母似乎因为繁华城离婚了，具体的原因我不太清楚。"', full:'"我是开发商林建国的女儿，我的父母似乎因为繁华城离婚了，具体的原因我不太清楚。"' },
+        { type:'dialogue', text:'"这软件是在小时候父亲的公司做来哄我玩的，也是我的道具。"', full:'"这软件是在小时候父亲的公司做来哄我玩的，也是我的道具。"' },
+        { type:'narration', text:'你将"识物"打开，试探性地对着桌上的蜡烛拍了一张，而软件也很诚实地告诉你，那是一个造型独特的香薰蜡烛。', full:'你将"识物"打开，试探性地对着桌上的蜡烛拍了一张，而软件也很诚实地告诉你，那是一个造型独特的香薰蜡烛。' },
+        { type:'dialogue', text:'"其实还挺聪明的，"你将识别的结果告诉大家，"感觉可以用来判断模糊的线索。"', full:'"其实还挺聪明的，"你将识别的结果告诉大家，"感觉可以用来判断模糊的线索。"' },
+        { type:'dialogue', text:'"嗯……是个很好的方向，"程拍了拍手，肯定了你的说法，"那么下一个玩家呢？我看见你手上可是有一把枪。"', full:'"嗯……是个很好的方向，"程拍了拍手，肯定了你的说法，"那么下一个玩家呢？我看见你手上可是有一把枪。"' },
+        { type:'narration', text:'你们齐刷刷地看向苏小晚，而她有些不好意思地笑了笑。', full:'你们齐刷刷地看向苏小晚，而她有些不好意思地笑了笑。' },
+        { type:'dialogue', text:'"只是玩具枪啦，"她将自己的道具往前推了些，方便能让你们看见，"说是没有杀伤力的，但是可以用来裁决今晚的真相。"', full:'"只是玩具枪啦，"她将自己的道具往前推了些，方便能让你们看见，"说是没有杀伤力的，但是可以用来裁决今晚的真相。"' },
+        { type:'dialogue', text:'"这么厉害！"李伟很给面子地惊呼了一声，反倒是把坐在他对面的苏小晚吓了一跳。', full:'"这么厉害！"李伟很给面子地惊呼了一声，反倒是把坐在他对面的苏小晚吓了一跳。' },
+        { type:'dialogue', text:'苏小晚狠狠剐了他一眼，随后继续说道：', full:'苏小晚狠狠剐了他一眼，随后继续说道：' },
+        { type:'dialogue', text:'"我是繁华城的兼职员工，曾经因为报警把来闹事的火灾受难者家属给赶出去了。我的良心在那之后感到不安，所以必须每回合开一次枪，否则这把枪就会永久失效。"', full:'"我是繁华城的兼职员工，曾经因为报警把来闹事的火灾受难者家属给赶出去了。我的良心在那之后感到不安，所以必须每回合开一次枪，否则这把枪就会永久失效。"' },
+        { type:'dialogue', text:'"一回合只能开一次吗？"你问。', full:'"一回合只能开一次吗？"你问。' },
+        { type:'dialogue', text:'"是的，"苏小晚点了点头，"感觉是一个很大的坑。"', full:'"是的，"苏小晚点了点头，"感觉是一个很大的坑。"' },
+        { type:'dialogue', text:'"那要不我先来一枪？"李伟忽然开口，"反正也不可能第一回合就裁决到凶手，还不如开一下看看效果。"', full:'"那要不我先来一枪？"李伟忽然开口，"反正也不可能第一回合就裁决到凶手，还不如开一下看看效果。"' },
+        { type:'narration', text:'苏小晚愣住了，似乎是没想到他会这样说，这样大胆的想法让她始料不及，却又说不上哪里不对，于是她只能求助性地看向DM。', full:'苏小晚愣住了，似乎是没想到他会这样说，这样大胆的想法让她始料不及，却又说不上哪里不对，于是她只能求助性地看向DM。' },
+        { type:'dialogue', text:'程接住了她的眼神，"可以的，对着墙按下扳机就行。"', full:'程接住了她的眼神，"可以的，对着墙按下扳机就行。"' },
+        { type:'narration', text:'既然主持人都这么说了，那苏小晚也没继续纠结，她将手枪递给李伟，"你来吧。"', full:'既然主持人都这么说了，那苏小晚也没继续纠结，她将手枪递给李伟，"你来吧。"' },
+        { type:'dialogue', text:'李伟没客气，他将手枪拿在手中掂量了一下，评价道："比我以前玩的小水枪还要轻。"', full:'李伟没客气，他将手枪拿在手中掂量了一下，评价道："比我以前玩的小水枪还要轻。"' },
+        { type:'narration', text:'枪口被对准他身后的墙壁，李伟看了一眼程，"哥，你说的，真能开哦？"', full:'枪口被对准他身后的墙壁，李伟看了一眼程，"哥，你说的，真能开哦？"' },
+        { type:'dialogue', text:'程摆了摆手，"放心开。"', full:'程摆了摆手，"放心开。"' },
+        { type:'divider', text:'"……咔哒。"', full:'"……咔哒。"' },
+        { type:'shoot', text:'"<span class="highlight-yellow">砰！</span>"', full:'"砰！"' },
+        { type:'narration', text:'一声剧烈的枪响之后，你瞪大了双眼，看见子弹在那堵白墙上炸出一圈黄色的颜料画。', full:'一声剧烈的枪响之后，你瞪大了双眼，看见子弹在那堵白墙上炸出一圈黄色的颜料画。' },
+        { type:'dialogue', text:'"我靠！"李伟下意识地看向手中的物件，"牛逼啊。"', full:'"我靠！"李伟下意识地看向手中的物件，"牛逼啊。"' },
+        { type:'narration', text:'苏小晚后知后觉地倒吸了一口凉气，而赵野儿也忍不住开口：', full:'苏小晚后知后觉地倒吸了一口凉气，而赵野儿也忍不住开口：' },
+        { type:'dialogue', text:'"这是我见过最酷的道具！"', full:'"这是我见过最酷的道具！"' },
+        { type:'narration', text:'程似乎很满意你们的反应，你听见他的声音里带着隐约的笑意：', full:'程似乎很满意你们的反应，你听见他的声音里带着隐约的笑意：' },
+        { type:'dialogue', text:'"好了，别管那面墙了，我们继续自我介绍吧。"', full:'"好了，别管那面墙了，我们继续自我介绍吧。"' },
+        { type:'narration', text:'李伟像是大梦初醒一般，轻手轻脚地将手枪放回到桌上。', full:'李伟像是大梦初醒一般，轻手轻脚地将手枪放回到桌上。' },
+        { type:'narration', text:'苏小晚警惕地盯着它，就像在提防着一个超大号的摔炮。', full:'苏小晚警惕地盯着它，就像在提防着一个超大号的摔炮。' },
+        { type:'narration', text:'她暂时不打算拿起这把枪了，反正这一回合里，枪也不会响第二次。', full:'她暂时不打算拿起这把枪了，反正这一回合里，枪也不会响第二次。' },
+        { type:'narration', text:'下一个做介绍的人，是李伟。', full:'下一个做介绍的人，是李伟。' },
+        { type:'narration', text:'他会是什么身份呢。', full:'他会是什么身份呢。' },
+        { type:'dialogue', text:'"咳咳，"察觉到你们的视线后，李伟清了清嗓子，"我的身份是——平平无奇的商场保安！"', full:'"咳咳，"察觉到你们的视线后，李伟清了清嗓子，"我的身份是——平平无奇的商场保安！"' },
+        { type:'dialogue', text:'"这是一个和我一样普通的打火机，我的道具，"他的手中窜出一丝明亮的火焰，随后又灭下，"看来今天我的任务就是辅佐各位美女们了。"', full:'"这是一个和我一样普通的打火机，我的道具，"他的手中窜出一丝明亮的火焰，随后又灭下，"看来今天我的任务就是辅佐各位美女们了。"' },
+        { type:'narration', text:'苏小晚对李伟的说辞表示怀疑，她皱着眉，"你在说真话还是假话？"', full:'苏小晚对李伟的说辞表示怀疑，她皱着眉，"你在说真话还是假话？"' },
+        { type:'dialogue', text:'"自然是真话，"李伟看向她，"美女不就在我面前吗？"', full:'"自然是真话，"李伟看向她，"美女不就在我面前吗？"' },
+        { type:'dialogue', text:'"不是这个，"苏小晚哎呀了一声，带着些轻微的恼意，"随便你吧！"', full:'"不是这个，"苏小晚哎呀了一声，带着些轻微的恼意，"随便你吧！"' },
+        { type:'narration', text:'你偷偷笑了一下，转过头去和赵野儿对视了一眼，发现对方也在抿着嘴笑。', full:'你偷偷笑了一下，转过头去和赵野儿对视了一眼，发现对方也在抿着嘴笑。' },
+        { type:'narration', text:'你们交换眼神——哎！这该死的暧昧期！', full:'你们交换眼神——哎！这该死的暧昧期！' },
+        { type:'narration', text:'那么，只剩最后一个人没有说话了。', full:'那么，只剩最后一个人没有说话了。' },
+        { type:'dialogue', text:'坐在你对面的男人终于抬起头，他慢吞吞道："我的身份，是未知的。"', full:'坐在你对面的男人终于抬起头，他慢吞吞道："我的身份，是未知的。"' },
+        { type:'narration', text:'他将身份卡翻开给你们看，上面只写了几个字：请等待下一回合——', full:'他将身份卡翻开给你们看，上面只写了几个字：请等待下一回合——' },
+        { type:'dialogue', text:'"不过，为了方便后续的交流，你们可以先叫我陆远，我的名字。"', full:'"不过，为了方便后续的交流，你们可以先叫我陆远，我的名字。"' },
+        { type:'narration', text:'你看着他，这人的长相不算大众，但你总觉得似乎在哪见过他。', full:'你看着他，这人的长相不算大众，但你总觉得似乎在哪见过他。' },
+        { type:'narration', text:'就连声音，听起来也有点耳熟。', full:'就连声音，听起来也有点耳熟。' },
+        { type:'narration', text:'是错觉吗？', full:'是错觉吗？' },
+        { type:'narration', text:'被团起来的棉花安安静静地放在陆远面前，没人知道它的作用。', full:'被团起来的棉花安安静静地放在陆远面前，没人知道它的作用。' },
+        { type:'dialogue', text:'"那看来这位的身份要等一小时之后才能揭晓了，"程接过话茬，"刚好讨论时间也差不多了，我再来给大家讲一下具体的游玩规则。"', full:'"那看来这位的身份要等一小时之后才能揭晓了，"程接过话茬，"刚好讨论时间也差不多了，我再来给大家讲一下具体的游玩规则。"' },
+        { type:'narration', text:'他站起身来，将背后的白板推开，你看见了一个被隐藏起来的暗门。', full:'他站起身来，将背后的白板推开，你看见了一个被隐藏起来的暗门。' },
+        { type:'dialogue', text:'"这扇门的后面，就是繁华城，"程一边说着，一边将门打开，"二十分钟的自由探索时间，每个人都会有一个对讲机，可以用来联系同伴或者工作人员，还可以用来看时间。"', full:'"这扇门的后面，就是繁华城，"程一边说着，一边将门打开，"二十分钟的自由探索时间，每个人都会有一个对讲机，可以用来联系同伴或者工作人员，还可以用来看时间。"' },
+        { type:'dialogue', text:'"就比如，现在是下午三点十分。"', full:'"就比如，现在是下午三点十分。"' },
+        { type:'narration', text:'你看见门的那边露出一丝光亮，但隔着长道看不清有什么。', full:'你看见门的那边露出一丝光亮，但隔着长道看不清有什么。' },
+        { type:'dialogue', text:'"二十分钟之后，一定要回到这里，"他做了个邀请的手势，"那么，请吧。"', full:'"二十分钟之后，一定要回到这里，"他做了个邀请的手势，"那么，请吧。"' },
+        { type:'narration', text:'赵野儿拉起你的手，从桌上拿了两个对讲机就往前走。', full:'赵野儿拉起你的手，从桌上拿了两个对讲机就往前走。' },
+        { type:'narration', text:'你也随着她的步伐，紧跟在后面。', full:'你也随着她的步伐，紧跟在后面。' },
+        { type:'dialogue', text:'"走吧走吧！"你听见她叽叽喳喳地说，"我还没有玩过实景演绎的剧本杀呢！"', full:'"走吧走吧！"你听见她叽叽喳喳地说，"我还没有玩过实景演绎的剧本杀呢！"' },
+        { type:'narration', text:'你回头看了一眼，苏小晚和李伟走在一起，而陆远站在了程的身边，不知道在说什么。', full:'你回头看了一眼，苏小晚和李伟走在一起，而陆远站在了程的身边，不知道在说什么。' },
+        { type:'narration', text:'眼前的亮光渐渐接近了。', full:'眼前的亮光渐渐接近了。' },
+        { type:'narration', text:'前面，会是什么？', full:'前面，会是什么？' },
+        // ══════ Demo End ══════
+        { type:'divider', text:'· · ·', full:'· · ·' },
+        { type:'narration', text:'感谢体验《大火开始前的三零零分钟》试玩版。', full:'感谢体验《大火开始前的三零零分钟》试玩版。' },
+        { type:'narration', text:'以上演示了前两章的完整剧情。', full:'以上演示了前两章的完整剧情。' },
+        { type:'divider', text:'· · ·', full:'· · ·' },
+        { type:'narration', text:'本读本只实现前两章。原故事尚未完稿，后续分支与结局尚未实现。', full:'本读本只实现前两章。原故事尚未完稿，后续分支与结局尚未实现。' },
+        { type:'divider', text:'· · ·', full:'· · ·' },
+        { type:'narration', text:'作者：一拳打扁小行星', full:'作者：一拳打扁小行星' },
+        { type:'narration', text:'感谢游玩。', full:'感谢游玩。' },
+        ];
+
+
+        return {
+            main: msgs,
+            branches: {
+                luyuan: branch_luyuan,
+                liwei: branch_liwei,
+                converge_safe: converge_safe,
+                call_out: branch_call_out,
+                stay_silent: branch_stay_silent,
+                converge_su: converge_su
+            }
+        };
+    }
+
+    const { main: messages, branches: branchPaths } = buildAllMessages();
+    const IDENTITY_READ_DONE_INDEX = messages.findIndex(m => m.type === 'narration' && m.text && m.text.includes('你也阅读完了自己的身份卡'));
+    buildChapterIndex(messages);
+    populateChapterSelect();
+    const totalMessages = messages.length;
+
+    // ─── Message Rendering ────────────────────────
+    function makeOverlayFlash() {
+        const el = document.createElement('div');
+        el.className = 'screen-flash';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 600);
+    }
+
+    function renderMessageToContainer(container, msg) {
+        const wrapper = document.createElement('div');
+        switch (msg.type) {
+            case 'chapter':
+                wrapper.className = 'msg-chapter';
+                wrapper.textContent = msg.text;
+                break;
+            case 'divider':
+                wrapper.className = 'msg-divider';
+                wrapper.textContent = msg.text;
+                break;
+            case 'narration':
+                wrapper.className = 'msg-narration';
+                wrapper.textContent = msg.text;
+                break;
+            case 'thought':
+                wrapper.className = 'msg-thought';
+                wrapper.textContent = msg.text;
+                break;
+            case 'dialogue':
+                wrapper.className = 'msg-dialogue';
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                b.textContent = msg.text;
+                wrapper.appendChild(b);
+                break;
+            case 'shake':
+                wrapper.className = 'msg-dialogue msg-shake';
+                const b2 = document.createElement('div');
+                b2.className = 'bubble';
+                b2.textContent = msg.text;
+                wrapper.appendChild(b2);
+                break;
+            case 'chat':
+                wrapper.className = 'msg-chat';
+                if (msg.isMine) wrapper.classList.add('mine');
+                const sp = document.createElement('div');
+                sp.className = 'chat-speaker';
+                sp.textContent = msg.speaker;
+                const cb = document.createElement('div');
+                cb.className = 'chat-bubble';
+                cb.textContent = msg.text;
+                wrapper.appendChild(sp);
+                wrapper.appendChild(cb);
+                break;
+            case 'identity':
+                wrapper.className = 'msg-identity';
+                wrapper.innerHTML = getIdentityHTML();
+                break;
+            case 'identity_update':
+                identityBlurRevealed = true;
+                wrapper.className = 'msg-identity';
+                wrapper.innerHTML = getIdentityHTML();
+                break;
+            case 'rules':
+                wrapper.className = 'msg-rules';
+                wrapper.innerHTML = rulesBaseHTML;
+                break;
+            case 'shoot':
+                wrapper.className = 'msg-dialogue msg-shoot';
+                const b3 = document.createElement('div');
+                b3.className = 'bubble';
+                b3.innerHTML = msg.text;
+                wrapper.appendChild(b3);
+                makeOverlayFlash();
+                makeShake();
+                break;
+            case 'time':
+                wrapper.className = 'msg-time';
+                wrapper.textContent = msg.text;
+                break;
+            case 'notice':
+                wrapper.className = 'msg-notice';
+                wrapper.innerHTML = `<div class="notice-card">
+                    <div class="notice-header">关于董事长视察的接待通知</div>
+                    <div class="notice-meta">发文部门：繁华城商场管理办公室<br>通知编号：2016-接-0042<br>发布时间：2016年X月X日 09:15</div>
+                    <div class="notice-body">致全体楼层主管及家具城负责人员：<br><br>接集团总部紧急通知，<span class="notice-highlight">林氏集团董事长林建国先生</span>将于今日下午<span class="notice-highlight">16:40至17:00</span>莅临繁华城进行突击视察。<br><br>重点视察区域：<span class="notice-highlight">三楼B区·家具城</span><br><br>视察重点：<br>1. 家具城内防火设施整改完成情况；<br>2. 消防通道畅通情况；<br>3. 商户消防安全培训记录抽查。<br><br>请家具城区域负责人立即展开自查，确保所有A级防火板材标识清晰可见，消防栓无遮挡，卷帘门下无杂物堆放。所有商户须在下午四点前完成货品整理与安全隐患排查。</div>
+                    <div class="notice-footer">有失远迎，切勿怠慢。<br><br>林氏集团·董事长办公室行政处<br>2016年X月X日</div>
+                </div>`;
+                break;
+            case 'whitetransition':
+                wrapper.className = 'msg-narration';
+                wrapper.style.opacity = '0';
+                document.body.classList.add('white-bg');
+                break;
+            case 'darktransition':
+                wrapper.className = 'msg-narration';
+                wrapper.style.opacity = '0';
+                document.body.classList.remove('white-bg');
+                break;
+            case 'whiteburst':
+                wrapper.className = 'msg-narration';
+                wrapper.style.opacity = '0';
+                makeWhiteBurst();
+                break;
+            case 'camera':
+                wrapper.className = 'msg-narration';
+                wrapper.style.opacity = '0';
+                makeBlackFlash();
+                break;
+            case 'struggle':
+                // Struggle is handled by showStruggle in advance(); fallback render
+                wrapper.className = 'msg-narration';
+                if (msg.narration) wrapper.textContent = msg.narration;
+                break;
+            default:
+                wrapper.className = 'msg-narration';
+                wrapper.textContent = msg.text || '';
+        }
+        container.appendChild(wrapper);
+        if (msg.type !== 'whitetransition' && msg.type !== 'darktransition') {
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    }
+
+    function renderSingle(msg) {
+        display.innerHTML = '';
+        renderMessageToContainer(display, msg);
+    }
+
+    function appendMessage(msg) {
+        renderMessageToContainer(display, msg);
+    }
+
+    // ─── Choice Rendering ─────────────────────────
+    function renderExploreAll(prompt, choices, viewed, afterAll, onAllDone) {
+        inputLocked = true;
+        hint.style.opacity = '0';
+        display.innerHTML = '';
+        const wrap = document.createElement('div');
+        wrap.className = 'choices-wrap';
+        if (prompt) {
+            const p = document.createElement('div');
+            p.className = 'choice-prompt';
+            p.textContent = prompt;
+            wrap.appendChild(p);
+        }
+        choices.forEach((ch, i) => {
+            if (viewed.has(i)) {
+                // 已查看：显示灰色标签
+                const label = document.createElement('div');
+                label.className = 'choice-btn chosen';
+                label.textContent = ch.label;
+                wrap.appendChild(label);
+            } else {
+                const btn = document.createElement('button');
+                btn.className = 'choice-btn';
+                btn.textContent = ch.label;
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    viewed.add(i);
+                    const msgs = ch.revealMsgs || [{ type: 'narration', text: ch.text }];
+                    startReveal(msgs, () => {
+                        renderExploreAll(prompt, choices, viewed, afterAll, onAllDone);
+                    });
+                });
+                wrap.appendChild(btn);
+            }
+        });
+        if (viewed.size === choices.length) {
+            if (afterAll) {
+                const after = document.createElement('div');
+                after.className = 'msg-narration';
+                after.style.cssText = 'text-align:center;padding:0.5em 0;max-width:90%;animation:fadeUp 0.5s ease forwards;';
+                after.textContent = afterAll;
+                wrap.appendChild(after);
+            }
+            const proceed = document.createElement('button');
+            proceed.className = 'proceed-btn';
+            proceed.textContent = '继续';
+            proceed.addEventListener('click', (ev) => {
+                ev.stopPropagation();
+                inputLocked = false;
+                hint.style.opacity = '1';
+                onAllDone();
+                advance();
+            });
+            wrap.appendChild(proceed);
+        }
+        display.appendChild(wrap);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function showExploreAll(prompt, choices, viewed, callback) {
+        renderExploreAll(prompt, choices, viewed, null, callback);
+    }
+
+    function showBranch(prompt, choices, callback) {
+        inputLocked = true;
+        hint.style.opacity = '0';
+        display.innerHTML = '';
+        const wrap = document.createElement('div');
+        wrap.className = 'choices-wrap';
+        if (prompt) {
+            const p = document.createElement('div');
+            p.className = 'choice-prompt';
+            p.textContent = prompt;
+            wrap.appendChild(p);
+        }
+        choices.forEach(ch => {
+            const btn = document.createElement('button');
+            btn.className = 'choice-btn';
+            btn.textContent = ch.label;
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                inputLocked = false;
+                hint.style.opacity = '1';
+                callback(ch.pathId);
+            });
+            wrap.appendChild(btn);
+        });
+        display.appendChild(wrap);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function showProceed(text, callback, shakeError) {
+        inputLocked = true;
+        hint.style.opacity = '0';
+        display.innerHTML = '';
+        const wrap = document.createElement('div');
+        wrap.className = 'choices-wrap';
+        const btn = document.createElement('button');
+        btn.className = 'proceed-btn';
+        btn.textContent = text;
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (shakeError) {
+                btn.classList.add('btn-shake-err');
+                setTimeout(() => {
+                    inputLocked = false;
+                    hint.style.opacity = '1';
+                    callback();
+                }, 500);
+            } else {
+                inputLocked = false;
+                hint.style.opacity = '1';
+                callback();
+            }
+        });
+        wrap.appendChild(btn);
+        display.appendChild(wrap);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    // ─── Chat Group Handling ─────────────────────
+    function findChatGroup(startIdx, msgArray) {
+        const group = [];
+        let i = startIdx;
+        const arr = msgArray || messages;
+        while (i < arr.length && arr[i].type === 'chat') {
+            group.push(i);
+            i++;
+        }
+        return group;
+    }
+
+    function startChatGroup(startIdx, msgArray, onDone) {
+        const arr = msgArray || messages;
+        const group = findChatGroup(startIdx, arr);
+        if (group.length === 0) return false;
+        chatGroupActive = true;
+        chatGroupMsgs = group;
+        chatGroupIdx = 0;
+        display.innerHTML = '';
+        appendMessage(arr[chatGroupMsgs[0]]);
+        chatGroupIdx = 1;
+        if (chatGroupIdx >= chatGroupMsgs.length) {
+            chatGroupActive = false;
+            currentIndex = chatGroupMsgs[chatGroupMsgs.length - 1];
+            updateProgress();
+            updateToolbarButtons();
+            waitingForClear = true;
+        }
+        return true;
+    }
+
+    function advanceChatGroup(msgArray, onDone) {
+        const arr = msgArray || messages;
+        if (!chatGroupActive) return;
+        if (chatGroupIdx < chatGroupMsgs.length) {
+            appendMessage(arr[chatGroupMsgs[chatGroupIdx]]);
+            chatGroupIdx++;
+        }
+        if (chatGroupIdx >= chatGroupMsgs.length) {
+            chatGroupActive = false;
+            currentIndex = chatGroupMsgs[chatGroupMsgs.length - 1];
+            updateProgress();
+            updateToolbarButtons();
+            waitingForClear = true;
+        }
+    }
+
+    // ─── Branch Execution ────────────────────────
+    function executeMessageSequence(seq, returnToMainAtIndex, onComplete) {
+        branchMessages = seq;
+        branchIdx = 0;
+        branchReturnIndex = returnToMainAtIndex;
+        branchActive = true;
+        // Render first message
+        display.innerHTML = '';
+        renderMessageToContainer(display, seq[0]);
+        branchIdx = 1;
+        if (branchIdx >= seq.length) {
+            finishBranch(onComplete);
+        }
+    }
+
+    function advanceBranch(onComplete) {
+        if (!branchActive) return;
+        if (isAnimating) return;
+        if (branchIdx < branchMessages.length) {
+            isAnimating = true;
+            display.classList.add('fading');
+            setTimeout(() => {
+                display.innerHTML = '';
+                renderMessageToContainer(display, branchMessages[branchIdx]);
+                branchIdx++;
+                display.classList.remove('fading');
+                window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+                if (branchIdx >= branchMessages.length) {
+                    finishBranch(onComplete);
+                }
+                isAnimating = false;
+            }, 300);
+        }
+    }
+
+    function finishBranch(onComplete) {
+        branchActive = false;
+        branchMessages = [];
+        branchIdx = 0;
+        if (onComplete) onComplete();
+    }
+
+    // ─── Reveal Queue（选项内容的逐条展示）───────────
+    function startReveal(msgs, doneCallback) {
+        inputLocked = true;
+        hint.style.opacity = '0';
+        revealQueue = msgs;
+        revealIdx = 0;
+        onRevealDone = doneCallback;
+        isAnimating = true;
+        display.classList.add('fading');
+        setTimeout(() => {
+            display.innerHTML = '';
+            renderMessageToContainer(display, msgs[0]);
+            display.classList.remove('fading');
+            revealIdx = 1;
+            isAnimating = false;
+        }, 300);
+    }
+
+    function advanceReveal() {
+        if (isAnimating) return;
+        if (revealIdx < revealQueue.length) {
+            isAnimating = true;
+            display.classList.add('fading');
+            setTimeout(() => {
+                display.innerHTML = '';
+                renderMessageToContainer(display, revealQueue[revealIdx]);
+                display.classList.remove('fading');
+                revealIdx++;
+                if (revealIdx >= revealQueue.length) finishReveal();
+                isAnimating = false;
+            }, 300);
+        } else if (revealIdx >= revealQueue.length && revealQueue.length > 0) {
+            // 单条消息：startReveal 播放完后等用户点击才 finish
+            finishReveal();
+        }
+    }
+
+    function finishReveal() {
+        revealQueue = [];
+        revealIdx = 0;
+        inputLocked = false;
+        hint.style.opacity = '1';
+        const cb = onRevealDone;
+        onRevealDone = null;
+        if (cb) cb();
+    }
+
+    // ─── Progress & Toolbar ──────────────────────
+    function updateProgress() {
+        if (currentIndex >= 0 && currentIndex < totalMessages) {
+            progressEl.textContent = `${currentIndex + 1} / ${totalMessages}`;
+            progressEl.style.opacity = '1';
+        } else {
+            progressEl.style.opacity = '0';
+        }
+    }
+
+    function updateToolbarButtons() {
+        if (!gameStarted) {
+            btnHistory.classList.add('hidden-btn');
+            btnRules.classList.add('hidden-btn');
+            btnIdentity.classList.add('hidden-btn');
+            selChapter.classList.add('hidden-btn');
+            return;
+        }
+        btnHistory.classList.remove('hidden-btn');
+        selChapter.classList.remove('hidden-btn');
+        const rulesShown = messages.slice(0, currentIndex + 1).some(m => m.type === 'rules');
+        btnRules.classList.toggle('hidden-btn', !rulesShown);
+        btnIdentity.classList.toggle('hidden-btn', currentIndex < IDENTITY_READ_DONE_INDEX);
+    }
+
+    // ─── History Panel ────────────────────────────
+    function getFlatHistory() {
+        const flat = [];
+        for (let i = 0; i <= currentIndex; i++) {
+            flat.push({ index: i, msg: messages[i] });
+        }
+        return flat;
+    }
+
+    function getTotalHistoryPages() {
+        const flat = getFlatHistory();
+        return Math.max(1, Math.ceil(flat.length / HISTORY_PAGE_SIZE));
+    }
+
+    function getHistoryPage(pageNum) {
+        const flat = getFlatHistory();
+        const start = pageNum * HISTORY_PAGE_SIZE;
+        return flat.slice(start, start + HISTORY_PAGE_SIZE);
+    }
+
+    function renderHistoryPanel() {
+        const totalPages = getTotalHistoryPages();
+        if (currentHistoryPage >= totalPages) currentHistoryPage = totalPages - 1;
+        if (currentHistoryPage < 0) currentHistoryPage = 0;
+        const pageMsgs = getHistoryPage(currentHistoryPage);
+        let chInfo = getChapterForIndex(pageMsgs.length > 0 ? pageMsgs[0].index : currentIndex);
+        historyChapterTitle.textContent = `第${chInfo.chapter}章 (${currentHistoryPage + 1}/${totalPages})`;
+        historyList.innerHTML = pageMsgs.map(item => {
+            const isCurrent = item.index === currentIndex;
+            return `<div class="history-item${isCurrent ? ' current' : ''}">${item.msg.full || item.msg.text || ''}</div>`;
+        }).join('');
+        historyPrev.disabled = currentHistoryPage === 0;
+        historyNext.disabled = currentHistoryPage >= totalPages - 1;
+    }
+
+    function openHistory() {
+        currentHistoryPage = Math.floor(currentIndex / HISTORY_PAGE_SIZE);
+        renderHistoryPanel();
+        historyPanel.classList.add('open');
+    }
+    function closeHistory() { historyPanel.classList.remove('open'); }
+
+    // ─── Overlay Handlers ─────────────────────────
+    function openIdentity() {
+        identityContent.innerHTML = getIdentityHTML();
+        identityOverlay.classList.add('open');
+    }
+    function closeIdentity() { identityOverlay.classList.remove('open'); }
+    function openRules() {
+        rulesContent.innerHTML = rulesBaseHTML;
+        rulesOverlay.classList.add('open');
+    }
+    function closeRules() { rulesOverlay.classList.remove('open'); }
+
+    // ─── Main Advance Logic ──────────────────────
+    function advance() {
+        if (isAnimating) return;
+        if (!gameStarted) return;
+
+        // 选项锁定：空白处点击不推进
+        if (inputLocked && revealQueue.length === 0) return;
+
+        // 逐条揭示选项内容
+        if (revealQueue.length > 0) { advanceReveal(); return; }
+
+        // Handle branch active
+        if (branchActive) {
+            advanceBranch(() => {
+                // After branch + converge, return to main
+                currentIndex = branchReturnIndex;
+                updateProgress();
+                updateToolbarButtons();
+                waitingForClear = true;
+            });
+            return;
+        }
+
+        if (currentIndex >= totalMessages - 1 && !waitingForClear && !chatGroupActive) {
+            hint.style.opacity = '0';
+            return;
+        }
+
+        if (waitingForClear) {
+            waitingForClear = false;
+            isAnimating = true;
+            display.classList.add('fading');
+            setTimeout(() => {
+                currentIndex++;
+                display.classList.remove('fading');
+                if (currentIndex >= totalMessages) {
+                    isAnimating = false;
+                    return;
+                }
+                var msg = messages[currentIndex];
+                if (msg.type === 'chat') {
+                    display.innerHTML = '';
+                    startChatGroup(currentIndex);
+                    isAnimating = false;
+                } else if (msg.type === 'explore_all') {
+                    display.innerHTML = '';
+                    updateProgress();
+                    updateToolbarButtons();
+                    var viewed = new Set();
+                    renderExploreAll(msg.prompt, msg.choices, viewed, msg.afterAll || null, function() {
+                        waitingForClear = true;
+                        updateProgress();
+                    });
+                    isAnimating = false;
+                } else if (msg.type === 'branch') {
+                    display.innerHTML = '';
+                    updateProgress();
+                    updateToolbarButtons();
+                    showBranch(msg.prompt, msg.choices, function(pathId) {
+                        var path = branchPaths[pathId];
+                        var converge = branchPaths[msg.convergeId] || [];
+                        var fullSeq = path.concat(converge);
+                        executeMessageSequence(fullSeq, currentIndex, function() {
+                            waitingForClear = true;
+                            updateProgress();
+                        });
+                    });
+                    isAnimating = false;
+                } else if (msg.type === 'proceed') {
+                    display.innerHTML = '';
+                    updateProgress();
+                    updateToolbarButtons();
+                    showProceed(msg.text, function() {
+                        if (msg.then && msg.then.length > 0) {
+                            executeMessageSequence(msg.then, currentIndex, function() {
+                                waitingForClear = true;
+                                updateProgress();
+                            });
+                        } else {
+                            waitingForClear = true;
+                            updateProgress();
+                            advance();
+                        }
+                    }, msg.shakeError);
+                    isAnimating = false;
+                } else if (msg.type === 'struggle') {
+                    display.innerHTML = '';
+                    updateProgress();
+                    updateToolbarButtons();
+                    showStruggle(msg, function() {
+                        waitingForClear = true;
+                        updateProgress();
+                        advance();
+                    });
+                    isAnimating = false;
+                } else {
+                    renderSingle(msg);
+                    updateProgress();
+                    updateToolbarButtons();
+                    isAnimating = false;
+                }
+            }, 300);
+            return;
+        }
+
+        if (chatGroupActive) {
+            advanceChatGroup();
+            return;
+        }
+
+        isAnimating = true;
+        const nextIdx = currentIndex + 1;
+        if (nextIdx >= totalMessages) {
+            hint.style.opacity = '0';
+            isAnimating = false;
+            return;
+        }
+
+        // Check for chat group
+        if (messages[nextIdx].type === 'chat') {
+            startChatGroup(nextIdx);
+            isAnimating = false;
+            return;
+        }
+
+        // Check for special types
+        const nextMsg = messages[nextIdx];
+
+        if (nextMsg.type === 'explore_all') {
+            currentIndex = nextIdx;
+            updateProgress();
+            updateToolbarButtons();
+            const viewed = new Set();
+            renderExploreAll(nextMsg.prompt, nextMsg.choices, viewed, nextMsg.afterAll || null, () => {
+                waitingForClear = true;
+                updateProgress();
+            });
+            isAnimating = false;
+            return;
+        }
+
+        if (nextMsg.type === 'branch') {
+            currentIndex = nextIdx;
+            updateProgress();
+            updateToolbarButtons();
+            showBranch(nextMsg.prompt, nextMsg.choices, (pathId) => {
+                const path = branchPaths[pathId];
+                const converge = branchPaths[nextMsg.convergeId] || [];
+                const fullSeq = [...path, ...converge];
+                // Find the index after this branch message to return to
+                const returnIdx = nextIdx;
+                executeMessageSequence(fullSeq, returnIdx, () => {
+                    waitingForClear = true;
+                    updateProgress();
+                });
+            });
+            isAnimating = false;
+            return;
+        }
+
+        if (nextMsg.type === 'proceed') {
+            currentIndex = nextIdx;
+            updateProgress();
+            updateToolbarButtons();
+            showProceed(nextMsg.text, () => {
+                if (nextMsg.then && nextMsg.then.length > 0) {
+                    executeMessageSequence(nextMsg.then, nextIdx, () => {
+                        waitingForClear = true;
+                        updateProgress();
+                    });
+                } else {
+                    waitingForClear = true;
+                    updateProgress();
+                    advance();
+                }
+            }, nextMsg.shakeError);
+            isAnimating = false;
+            return;
+        }
+
+        if (nextMsg.type === 'struggle') {
+            currentIndex = nextIdx;
+            updateProgress();
+            updateToolbarButtons();
+            showStruggle(nextMsg, () => {
+                waitingForClear = true;
+                updateProgress();
+                advance();
+            });
+            isAnimating = false;
+            return;
+        }
+
+        currentIndex = nextIdx;
+        if (currentIndex > 0) {
+            display.classList.add('fading');
+            setTimeout(() => {
+                renderSingle(messages[currentIndex]);
+                display.classList.remove('fading');
+                updateProgress();
+                updateToolbarButtons();
+                isAnimating = false;
+            }, 300);
+        } else {
+            renderSingle(messages[currentIndex]);
+            updateProgress();
+            updateToolbarButtons();
+            isAnimating = false;
+        }
+        if (currentIndex === totalMessages - 1) {
+            hint.style.opacity = '0';
+        }
+    }
+
+    // ─── Cover & Start ───────────────────────────
+    function showCover() {
+        display.innerHTML = `<div class="cover">
+            <div class="cover-title">《大火开始前的三零零分钟》</div>
+            <div class="cover-author">作者&mdash;&mdash;&mdash;一拳打扁小行星</div>
+            <button class="cover-btn" id="start-btn">开始游戏</button>
+        </div>`;
+        hint.style.opacity = '0';
+        progressEl.style.opacity = '0';
+        updateToolbarButtons();
+        document.getElementById('start-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            startGame();
+        });
+    }
+
+    function startGame() {
+        gameStarted = true;
+        hint.style.opacity = '1';
+        app.style.cursor = 'pointer';
+        currentIndex = -1;
+        document.body.classList.remove('white-bg');
+        identityBlurRevealed = false;
+        updateToolbarButtons();
+        advance();
+    }
+
+    // ─── Event Listeners ─────────────────────────
+    function handleClick(e) {
+        if (isAnimating) return;
+        if (!gameStarted) return;
+        if (e.target.closest('#toolbar') ||
+            e.target.closest('#history-panel') ||
+            e.target.closest('#identity-overlay') ||
+            e.target.closest('#rules-overlay')) return;
+        if (e.target.closest('.choice-btn') || e.target.closest('.proceed-btn')) return;
+        advance();
+    }
+
+    app.addEventListener('click', handleClick);
+
+    btnIdentity.addEventListener('click', (e) => { e.stopPropagation(); openIdentity(); });
+    identityClose.addEventListener('click', (e) => { e.stopPropagation(); closeIdentity(); });
+    identityOverlay.addEventListener('click', (e) => { if (e.target === identityOverlay) closeIdentity(); });
+    btnRules.addEventListener('click', (e) => { e.stopPropagation(); openRules(); });
+    rulesClose.addEventListener('click', (e) => { e.stopPropagation(); closeRules(); });
+    rulesOverlay.addEventListener('click', (e) => { if (e.target === rulesOverlay) closeRules(); });
+    btnHistory.addEventListener('click', (e) => { e.stopPropagation(); openHistory(); });
+    selChapter.addEventListener('change', (e) => { e.stopPropagation(); const v = parseInt(e.target.value); if (!isNaN(v)) { jumpToChapter(v); selChapter.value = ''; } });
+    historyClose.addEventListener('click', (e) => { e.stopPropagation(); closeHistory(); });
+    historyPanel.addEventListener('click', (e) => { if (e.target === historyPanel) closeHistory(); });
+    historyPrev.addEventListener('click', (e) => { e.stopPropagation(); if (currentHistoryPage > 0) { currentHistoryPage--; renderHistoryPanel(); } });
+    historyNext.addEventListener('click', (e) => { e.stopPropagation(); if (currentHistoryPage < getTotalHistoryPages() - 1) { currentHistoryPage++; renderHistoryPanel(); } });
+
+    // ─── Init ────────────────────────────────────
+    hint.style.opacity = '0';
+    progressEl.style.opacity = '0';
+    app.style.cursor = 'default';
+    updateToolbarButtons();
+    showCover();
+})();
+</script>
+</body>
+</html>
+</html>
